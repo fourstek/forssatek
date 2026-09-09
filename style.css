@@ -1,0 +1,61 @@
+/* فرصتك - الستايل الأساسي */
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #5b35d5;
+  color: white;
+}
+
+button,
+.category,
+.login {
+  transition: 0.2s ease;
+}
+
+button:hover,
+.login:hover {
+  transform: translateY(-2px);
+}
+
+.search:focus-within {
+  box-shadow: 0 0 0 4px rgba(91, 53, 213, 0.15);
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card:active {
+  transform: scale(0.99);
+}
+
+@media (max-width: 500px) {
+  .logo {
+    font-size: 20px;
+  }
+
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .search {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .search button {
+    min-height: 45px;
+  }
+}
