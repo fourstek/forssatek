@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>فرصتك | فرص المغرب</title>
+  <meta name="description" content="فرصتك - منصة مغربية للوظائف والمباريات والمنح والتكوينات والفرص الجديدة.">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f6f7fb;
+      color: #17152b;
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1150px;
+      margin: auto;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 23px;
+      color: #5b35d5;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: #5b35d5;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    nav {
+      display: flex;
+      gap: 25px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    nav a:hover {
+      color: #5b35d5;
+    }
+
+    .login {
+      background: #5b35d5;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .hero {
+      max-width: 1150px;
+      margin: 30px auto;
+      padding: 55px 30px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #321477, #6b3fe2);
+      color: white;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(60, 35, 140, .18);
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 55px);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      opacity: .9;
+      margin-bottom: 28px;
+    }
+
+    .search {
+      max-width: 720px;
+      margin: auto;
+      display: flex;
+      background: white;
+      padding: 7px;
+      border-radius: 15px;
+    }
+
+    .search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 13px;
+      font-size: 16px;
+      color: #333;
+      direction: rtl;
+    }
+
+    .search button {
+      border: none;
+      background: #5b35d5;
+      color: white;
+      padding: 0 25px;
+      border-radius: 11px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .categories {
+      max-width: 850px;
+      margin: 25px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .category {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.2);
+      padding: 8px 17px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 45px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title h2 {
+      font-size: 27px;
+    }
+
+    .section-title a {
+      color: #5b35d5;
+      font-weight: bold;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid #eee;
+      transition: .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0,0,0,.07);
+    }
+
+    .tag {
+      display: inline-block;
+      background: #eee8ff;
+      color: #5b35d5;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .meta {
+      margin-top: 18px;
+      padding-top: 13px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 35px 0;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 18px;
+      padding: 25px;
+      text-align: center;
+      border: 1px solid #eee;
+    }
+
+    .stat strong {
+      display: block;
+      color: #5b35d5;
+      font-size: 30px;
+    }
+
+    .community {
+      background: #17132c;
+      color: white;
+      border-radius: 25px;
+      padding: 35px;
+    }
+
+    .community h2 {
+      margin-bottom: 8px;
+    }
+
+    .community p {
+      color: #c9c5d8;
+    }
+
+    .post {
+      background: white;
+      color: #222;
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 17px;
+    }
+
+    .post-user {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .post-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 20px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 50px;
+      background: white;
+      border-top: 1px solid #eee;
+      padding: 30px 20px;
+      text-align: center;
+      color: #777;
+    }
+
+    @media (max-width: 800px) {
+      nav {
+        display: none;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        margin: 15px;
+        padding: 40px 18px;
+      }
+
+      .container {
+        padding: 0 15px;
+      }
+
+      .search button {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+
+    <a href="#" class="logo">
+      <span class="logo-icon">ف</span>
+      فرصتك
+    </a>
+
+    <nav>
+      <a href="#home">الرئيسية</a>
+      <a href="#opportunities">الفرص</a>
+      <a href="#community">المجتمع</a>
+    </nav>
+
+    <a href="#" class="login" onclick="loginMessage()">تسجيل الدخول</a>
+
+  </div>
+</header>
+
+<main id="home">
+
+  <section class="hero">
+
+    <h1>لقّي فرصتك وخلي الفرص تلقاك</h1>
+
+    <p>
+      وظائف، مباريات، منح، تكوينات وفرص جديدة في المغرب
+    </p>
+
+    <div class="search">
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="شنو كتقلب عليه؟ مثال: أستاذ، مباراة، منحة..."
+      >
+
+      <button onclick="searchOpportunities()">
+        بحث
+      </button>
+
+    </div>
+
+    <div class="categories">
+
+      <span class="category" onclick="filterCategory('وظائف')">
+        💼 وظائف
+      </span>
+
+      <span class="category" onclick="filterCategory('مباريات')">
+        🏛️ مباريات
+      </span>
+
+      <span class="category" onclick="filterCategory('منح')">
+        🎓 منح
+      </span>
+
+      <span class="category" onclick="filterCategory('تكوين')">
+        📚 تكوين
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <section class="container">
+
+    <div class="section-title">
+      <h2>🔥 فرص جديدة</h2>
+      <a href="#opportunities">شوف الكل</a>
+    </div>
+
+    <div class="cards" id="opportunities">
+
+      <article class="card">
+
+        <span class="tag">مباراة</span>
+
+        <h3>مباراة توظيف جديدة بالمغرب</h3>
+
+        <p>
+          فرصة للترشح لمباراة توظيف بعدد من المناصب.
+        </p>
+
+        <div class="meta">
+          <span>🇲🇦 المغرب</span>
+          <span>جديدة</span>
+        </div>
+
+      </article>
+
+
+      <article class="card">
+
+        <span class="tag">وظيفة</span>
+
+        <h3>فرصة عمل في شركة مغربية</h3>
+
+        <p>
+          منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.
+        </p>
+
+        <div class="meta">
+          <span>💼 وظيفة</span>
+          <span>جديدة</span>
+        </div>
+
+      </article>
+
+
+      <article class="card">
+
+        <span class="tag">منحة</span>
+
+        <h3>منحة دراسية للطلبة</h3>
+
+        <p>
+          فرصة للاستفادة من برنامج دعم ودراسة.
+        </p>
+
+        <div class="meta">
+          <span>🎓 دراسة</span>
+          <span>مفتوحة</span>
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <div class="stats">
+
+      <div class="stat">
+        <strong>+250</strong>
+        فرصة نشطة
+      </div>
+
+      <div class="stat">
+        <strong>+12K</strong>
+        عضو
+      </div>
+
+      <div class="stat">
+        <strong>يومياً</strong>
+        فرص جديدة
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="container" id="community">
+
+    <div class="community">
+
+      <h2>👥 مجتمع فرصتك</h2>
+
+      <p>
+        شارك الفرص، سول، جاوب، وخلي الناس تستافد معاك.
+      </p>
+
+      <div class="post">
+
+        <div class="post-user">
+          👤 عضو في فرصتك
+        </div>
+
+        <p>
+          واش كاينة شي مباراة جديدة مفتوحة دابا؟
+          شاركوها مع الإخوان باش يستافدو كاملين.
+        </p>
+
+        <div class="post-actions">
+          <span>❤️ إعجاب</span>
+          <span>💬 تعليق</span>
+          <span>↗️ مشاركة</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  <strong>فرصتك 🇲🇦</strong>
+
+  <p>
+    منصة مغربية باش تلقى الفرصة المناسبة ليك.
+  </p>
+
+  <p>
+    © 2026 فرصتك - جميع الحقوق محفوظة
+  </p>
+
+</footer>
+
+
+<script>
+
+  function searchOpportunities() {
+
+    const input = document.getElementById("searchInput").value.trim();
+
+    if (!input) {
+      alert("كتب شنو كتقلب عليه أولاً 🔎");
+      return;
+    }
+
+    alert("غادي نقلبو على: " + input);
+  }
+
+
+  function filterCategory(category) {
+
+    document.getElementById("searchInput").value = category;
+
+    document.getElementById("opportunities")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+
+  function loginMessage() {
+
+    alert("تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤");
+
+  }
+
+</script>
+
+</body>
+</html>
