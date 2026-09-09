@@ -219,16 +219,11 @@
       border-radius: 20px;
       border: 1px solid #eee;
       transition: .2s;
-      cursor: pointer;
     }
 
     .card:hover {
       transform: translateY(-4px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, .07);
-    }
-
-    .card:active {
-      transform: scale(.99);
     }
 
     .tag {
@@ -260,6 +255,25 @@
       justify-content: space-between;
       color: #777;
       font-size: 13px;
+    }
+
+    .details-btn {
+      width: 100%;
+      margin-top: 18px;
+      border: none;
+      background: #5b35d5;
+      color: white;
+      padding: 11px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+      transition: .2s;
+    }
+
+    .details-btn:hover {
+      transform: translateY(-2px);
+      background: #4927b8;
     }
 
     .stats {
@@ -328,7 +342,85 @@
       color: #777;
     }
 
+    /* نافذة التفاصيل */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .65);
+      z-index: 999;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      max-width: 650px;
+      margin: 70px auto;
+      background: white;
+      border-radius: 22px;
+      padding: 30px;
+      position: relative;
+      animation: modalShow .2s ease;
+    }
+
+    @keyframes modalShow {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close {
+      position: absolute;
+      top: 12px;
+      left: 15px;
+      border: none;
+      background: #f1f1f1;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .modal h2 {
+      color: #5b35d5;
+      margin-bottom: 15px;
+      padding-left: 40px;
+    }
+
+    .modal-info {
+      margin: 20px 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .modal-info div {
+      background: #f7f7fb;
+      padding: 12px 15px;
+      border-radius: 10px;
+    }
+
+    .apply-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #5b35d5;
+      color: white;
+      padding: 13px;
+      border-radius: 11px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
     @media (max-width: 800px) {
+
       nav {
         display: none;
       }
@@ -356,6 +448,7 @@
     }
 
     @media (max-width: 500px) {
+
       .logo {
         font-size: 20px;
       }
@@ -381,6 +474,11 @@
       .search button {
         min-height: 45px;
       }
+
+      .modal-content {
+        margin: 30px auto;
+        padding: 22px;
+      }
     }
   </style>
 </head>
@@ -401,7 +499,11 @@
         <a href="#community">المجتمع</a>
       </nav>
 
-      <a href="#" class="login" onclick="loginMessage(); return false;">
+      <a
+        href="#"
+        class="login"
+        onclick="loginMessage(); return false;"
+      >
         تسجيل الدخول
       </a>
 
@@ -466,11 +568,14 @@
 
     </section>
 
+
     <section class="container">
 
       <div class="section-title">
 
-        <h2>🔥 فرص جديدة</h2>
+        <h2>
+          🔥 فرص جديدة
+        </h2>
 
         <a href="#opportunities">
           شوف الكل
@@ -478,7 +583,11 @@
 
       </div>
 
+
       <div class="cards" id="opportunities">
+
+
+        <!-- الفرصة الأولى -->
 
         <article class="card">
 
@@ -499,7 +608,23 @@
             <span>جديدة</span>
           </div>
 
+          <button
+            class="details-btn"
+            onclick="openOpportunity(
+              'مباراة توظيف جديدة بالمغرب',
+              'مباراة',
+              'المغرب',
+              'فرصة للترشح لمباراة توظيف بعدد من المناصب.',
+              'مفتوحة'
+            )"
+          >
+            شوف التفاصيل 👁️
+          </button>
+
         </article>
+
+
+        <!-- الفرصة الثانية -->
 
         <article class="card">
 
@@ -516,11 +641,27 @@
           </p>
 
           <div class="meta">
-            <span>💼 وظيفة</span>
+            <span>💼 المغرب</span>
             <span>جديدة</span>
           </div>
 
+          <button
+            class="details-btn"
+            onclick="openOpportunity(
+              'فرصة عمل في شركة مغربية',
+              'وظيفة',
+              'المغرب',
+              'منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.',
+              'مفتوحة'
+            )"
+          >
+            شوف التفاصيل 👁️
+          </button>
+
         </article>
+
+
+        <!-- الفرصة الثالثة -->
 
         <article class="card">
 
@@ -537,13 +678,27 @@
           </p>
 
           <div class="meta">
-            <span>🎓 دراسة</span>
+            <span>🎓 المغرب</span>
             <span>مفتوحة</span>
           </div>
+
+          <button
+            class="details-btn"
+            onclick="openOpportunity(
+              'منحة دراسية للطلبة',
+              'منحة',
+              'المغرب',
+              'فرصة للاستفادة من برنامج دعم ودراسة.',
+              'مفتوحة'
+            )"
+          >
+            شوف التفاصيل 👁️
+          </button>
 
         </article>
 
       </div>
+
 
       <div class="stats">
 
@@ -565,6 +720,7 @@
       </div>
 
     </section>
+
 
     <section class="container" id="community">
 
@@ -603,6 +759,7 @@
 
   </main>
 
+
   <footer>
 
     <strong>
@@ -619,7 +776,139 @@
 
   </footer>
 
+
+  <!-- نافذة تفاصيل الفرصة -->
+
+  <div
+    class="modal"
+    id="opportunityModal"
+    onclick="closeModalOutside(event)"
+  >
+
+    <div
+      class="modal-content"
+      onclick="event.stopPropagation()"
+    >
+
+      <button
+        class="close"
+        onclick="closeOpportunity()"
+      >
+        ×
+      </button>
+
+      <span class="tag" id="modalTag">
+        فرصة
+      </span>
+
+      <h2 id="modalTitle">
+        تفاصيل الفرصة
+      </h2>
+
+      <p id="modalDescription">
+        تفاصيل الفرصة ستظهر هنا.
+      </p>
+
+      <div class="modal-info">
+
+        <div>
+          📂 التصنيف:
+          <strong id="modalCategory"></strong>
+        </div>
+
+        <div>
+          📍 المكان:
+          <strong id="modalLocation"></strong>
+        </div>
+
+        <div>
+          📅 الحالة:
+          <strong id="modalStatus"></strong>
+        </div>
+
+      </div>
+
+      <a
+        href="#"
+        class="apply-btn"
+        onclick="applyMessage(); return false;"
+      >
+        🚀 قدّم الآن
+      </a>
+
+    </div>
+
+  </div>
+
+
   <script src="app.js"></script>
+
+
+  <script>
+
+    function openOpportunity(
+      title,
+      category,
+      location,
+      description,
+      status
+    ) {
+
+      document.getElementById("modalTitle").textContent = title;
+
+      document.getElementById("modalTag").textContent = category;
+
+      document.getElementById("modalCategory").textContent = category;
+
+      document.getElementById("modalLocation").textContent = location;
+
+      document.getElementById("modalDescription").textContent = description;
+
+      document.getElementById("modalStatus").textContent = status;
+
+      document.getElementById("opportunityModal").style.display = "block";
+
+      document.body.style.overflow = "hidden";
+    }
+
+
+    function closeOpportunity() {
+
+      document.getElementById("opportunityModal").style.display = "none";
+
+      document.body.style.overflow = "auto";
+    }
+
+
+    function closeModalOutside(event) {
+
+      if (event.target.id === "opportunityModal") {
+
+        closeOpportunity();
+
+      }
+
+    }
+
+
+    function applyMessage() {
+
+      alert("التقديم الحقيقي غادي نربطوه برابط الجهة الناشرة ديال الفرصة 🚀");
+
+    }
+
+
+    document.addEventListener("keydown", function(event) {
+
+      if (event.key === "Escape") {
+
+        closeOpportunity();
+
+      }
+
+    });
+
+  </script>
 
 </body>
 </html> 
