@@ -18,6 +18,10 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, Tahoma, sans-serif;
       background: #f6f7fb;
@@ -91,6 +95,11 @@
       padding: 9px 18px;
       border-radius: 10px;
       font-weight: bold;
+      transition: 0.2s ease;
+    }
+
+    .login:hover {
+      transform: translateY(-2px);
     }
 
     .hero {
@@ -142,6 +151,15 @@
       border-radius: 11px;
       cursor: pointer;
       font-weight: bold;
+      transition: 0.2s ease;
+    }
+
+    .search button:hover {
+      transform: translateY(-2px);
+    }
+
+    .search:focus-within {
+      box-shadow: 0 0 0 4px rgba(91, 53, 213, 0.15);
     }
 
     .categories {
@@ -154,11 +172,17 @@
     }
 
     .category {
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255, 255, 255, .15);
+      border: 1px solid rgba(255, 255, 255, .2);
       padding: 8px 17px;
       border-radius: 30px;
       cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .category:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, .22);
     }
 
     .container {
@@ -195,11 +219,16 @@
       border-radius: 20px;
       border: 1px solid #eee;
       transition: .2s;
+      cursor: pointer;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 15px 35px rgba(0,0,0,.07);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, .07);
+    }
+
+    .card:active {
+      transform: scale(.99);
     }
 
     .tag {
@@ -325,6 +354,34 @@
         padding: 0 15px;
       }
     }
+
+    @media (max-width: 500px) {
+      .logo {
+        font-size: 20px;
+      }
+
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .search {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .search button {
+        min-height: 45px;
+      }
+    }
   </style>
 </head>
 
@@ -344,7 +401,7 @@
         <a href="#community">المجتمع</a>
       </nav>
 
-      <a href="#" class="login" onclick="loginMessage()">
+      <a href="#" class="login" onclick="loginMessage(); return false;">
         تسجيل الدخول
       </a>
 
@@ -377,19 +434,31 @@
 
       <div class="categories">
 
-        <span class="category" onclick="filterCategory('وظائف')">
+        <span
+          class="category"
+          onclick="filterCategory('وظائف')"
+        >
           💼 وظائف
         </span>
 
-        <span class="category" onclick="filterCategory('مباريات')">
+        <span
+          class="category"
+          onclick="filterCategory('مباريات')"
+        >
           🏛️ مباريات
         </span>
 
-        <span class="category" onclick="filterCategory('منح')">
+        <span
+          class="category"
+          onclick="filterCategory('منح')"
+        >
           🎓 منح
         </span>
 
-        <span class="category" onclick="filterCategory('تكوين')">
+        <span
+          class="category"
+          onclick="filterCategory('تكوين')"
+        >
           📚 تكوين
         </span>
 
@@ -400,15 +469,27 @@
     <section class="container">
 
       <div class="section-title">
+
         <h2>🔥 فرص جديدة</h2>
-        <a href="#opportunities">شوف الكل</a>
+
+        <a href="#opportunities">
+          شوف الكل
+        </a>
+
       </div>
 
       <div class="cards" id="opportunities">
 
         <article class="card">
-          <span class="tag">مباراة</span>
-          <h3>مباراة توظيف جديدة بالمغرب</h3>
+
+          <span class="tag">
+            مباراة
+          </span>
+
+          <h3>
+            مباراة توظيف جديدة بالمغرب
+          </h3>
+
           <p>
             فرصة للترشح لمباراة توظيف بعدد من المناصب.
           </p>
@@ -417,11 +498,19 @@
             <span>🇲🇦 المغرب</span>
             <span>جديدة</span>
           </div>
+
         </article>
 
         <article class="card">
-          <span class="tag">وظيفة</span>
-          <h3>فرصة عمل في شركة مغربية</h3>
+
+          <span class="tag">
+            وظيفة
+          </span>
+
+          <h3>
+            فرصة عمل في شركة مغربية
+          </h3>
+
           <p>
             منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.
           </p>
@@ -430,11 +519,19 @@
             <span>💼 وظيفة</span>
             <span>جديدة</span>
           </div>
+
         </article>
 
         <article class="card">
-          <span class="tag">منحة</span>
-          <h3>منحة دراسية للطلبة</h3>
+
+          <span class="tag">
+            منحة
+          </span>
+
+          <h3>
+            منحة دراسية للطلبة
+          </h3>
+
           <p>
             فرصة للاستفادة من برنامج دعم ودراسة.
           </p>
@@ -443,6 +540,7 @@
             <span>🎓 دراسة</span>
             <span>مفتوحة</span>
           </div>
+
         </article>
 
       </div>
@@ -472,7 +570,9 @@
 
       <div class="community">
 
-        <h2>👥 مجتمع فرصتك</h2>
+        <h2>
+          👥 مجتمع فرصتك
+        </h2>
 
         <p>
           شارك الفرص، سول، جاوب، وخلي الناس تستافد معاك.
@@ -505,7 +605,9 @@
 
   <footer>
 
-    <strong>فرصتك 🇲🇦</strong>
+    <strong>
+      فرصتك 🇲🇦
+    </strong>
 
     <p>
       منصة مغربية باش تلقى الفرصة المناسبة ليك.
