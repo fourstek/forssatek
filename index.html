@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>فرصتك | فرص المغرب</title>
-  <meta name="description" content="فرصتك - منصة مغربية للوظائف والمباريات والمنح والتكوينات والفرص الجديدة.">
+
+  <meta
+    name="description"
+    content="فرصتك - منصة مغربية للوظائف والمباريات والمنح والتكوينات والفرص الجديدة."
+  >
 
   <style>
     * {
@@ -326,267 +330,194 @@
 
 <body>
 
-<header>
-  <div class="nav">
+  <header>
+    <div class="nav">
 
-    <a href="#" class="logo">
-      <span class="logo-icon">ف</span>
-      فرصتك
-    </a>
+      <a href="#" class="logo">
+        <span class="logo-icon">ف</span>
+        فرصتك
+      </a>
 
-    <nav>
-      <a href="#home">الرئيسية</a>
-      <a href="#opportunities">الفرص</a>
-      <a href="#community">المجتمع</a>
-    </nav>
+      <nav>
+        <a href="#home">الرئيسية</a>
+        <a href="#opportunities">الفرص</a>
+        <a href="#community">المجتمع</a>
+      </nav>
 
-    <a href="#" class="login" onclick="loginMessage()">تسجيل الدخول</a>
-
-  </div>
-</header>
-
-<main id="home">
-
-  <section class="hero">
-
-    <h1>لقّي فرصتك وخلي الفرص تلقاك</h1>
-
-    <p>
-      وظائف، مباريات، منح، تكوينات وفرص جديدة في المغرب
-    </p>
-
-    <div class="search">
-
-      <input
-        id="searchInput"
-        type="text"
-        placeholder="شنو كتقلب عليه؟ مثال: أستاذ، مباراة، منحة..."
-      >
-
-      <button onclick="searchOpportunities()">
-        بحث
-      </button>
+      <a href="#" class="login" onclick="loginMessage()">
+        تسجيل الدخول
+      </a>
 
     </div>
+  </header>
 
-    <div class="categories">
+  <main id="home">
 
-      <span class="category" onclick="filterCategory('وظائف')">
-        💼 وظائف
-      </span>
+    <section class="hero">
 
-      <span class="category" onclick="filterCategory('مباريات')">
-        🏛️ مباريات
-      </span>
-
-      <span class="category" onclick="filterCategory('منح')">
-        🎓 منح
-      </span>
-
-      <span class="category" onclick="filterCategory('تكوين')">
-        📚 تكوين
-      </span>
-
-    </div>
-
-  </section>
-
-
-  <section class="container">
-
-    <div class="section-title">
-      <h2>🔥 فرص جديدة</h2>
-      <a href="#opportunities">شوف الكل</a>
-    </div>
-
-    <div class="cards" id="opportunities">
-
-      <article class="card">
-
-        <span class="tag">مباراة</span>
-
-        <h3>مباراة توظيف جديدة بالمغرب</h3>
-
-        <p>
-          فرصة للترشح لمباراة توظيف بعدد من المناصب.
-        </p>
-
-        <div class="meta">
-          <span>🇲🇦 المغرب</span>
-          <span>جديدة</span>
-        </div>
-
-      </article>
-
-
-      <article class="card">
-
-        <span class="tag">وظيفة</span>
-
-        <h3>فرصة عمل في شركة مغربية</h3>
-
-        <p>
-          منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.
-        </p>
-
-        <div class="meta">
-          <span>💼 وظيفة</span>
-          <span>جديدة</span>
-        </div>
-
-      </article>
-
-
-      <article class="card">
-
-        <span class="tag">منحة</span>
-
-        <h3>منحة دراسية للطلبة</h3>
-
-        <p>
-          فرصة للاستفادة من برنامج دعم ودراسة.
-        </p>
-
-        <div class="meta">
-          <span>🎓 دراسة</span>
-          <span>مفتوحة</span>
-        </div>
-
-      </article>
-
-    </div>
-
-
-    <div class="stats">
-
-      <div class="stat">
-        <strong>+250</strong>
-        فرصة نشطة
-      </div>
-
-      <div class="stat">
-        <strong>+12K</strong>
-        عضو
-      </div>
-
-      <div class="stat">
-        <strong>يومياً</strong>
-        فرص جديدة
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="container" id="community">
-
-    <div class="community">
-
-      <h2>👥 مجتمع فرصتك</h2>
+      <h1>لقّي فرصتك وخلي الفرص تلقاك</h1>
 
       <p>
-        شارك الفرص، سول، جاوب، وخلي الناس تستافد معاك.
+        وظائف، مباريات، منح، تكوينات وفرص جديدة في المغرب
       </p>
 
-      <div class="post">
+      <div class="search">
 
-        <div class="post-user">
-          👤 عضو في فرصتك
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="شنو كتقلب عليه؟ مثال: أستاذ، مباراة، منحة..."
+        >
+
+        <button onclick="searchOpportunities()">
+          بحث
+        </button>
+
+      </div>
+
+      <div class="categories">
+
+        <span class="category" onclick="filterCategory('وظائف')">
+          💼 وظائف
+        </span>
+
+        <span class="category" onclick="filterCategory('مباريات')">
+          🏛️ مباريات
+        </span>
+
+        <span class="category" onclick="filterCategory('منح')">
+          🎓 منح
+        </span>
+
+        <span class="category" onclick="filterCategory('تكوين')">
+          📚 تكوين
+        </span>
+
+      </div>
+
+    </section>
+
+    <section class="container">
+
+      <div class="section-title">
+        <h2>🔥 فرص جديدة</h2>
+        <a href="#opportunities">شوف الكل</a>
+      </div>
+
+      <div class="cards" id="opportunities">
+
+        <article class="card">
+          <span class="tag">مباراة</span>
+          <h3>مباراة توظيف جديدة بالمغرب</h3>
+          <p>
+            فرصة للترشح لمباراة توظيف بعدد من المناصب.
+          </p>
+
+          <div class="meta">
+            <span>🇲🇦 المغرب</span>
+            <span>جديدة</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">وظيفة</span>
+          <h3>فرصة عمل في شركة مغربية</h3>
+          <p>
+            منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.
+          </p>
+
+          <div class="meta">
+            <span>💼 وظيفة</span>
+            <span>جديدة</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">منحة</span>
+          <h3>منحة دراسية للطلبة</h3>
+          <p>
+            فرصة للاستفادة من برنامج دعم ودراسة.
+          </p>
+
+          <div class="meta">
+            <span>🎓 دراسة</span>
+            <span>مفتوحة</span>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong>+250</strong>
+          فرصة نشطة
         </div>
 
-        <p>
-          واش كاينة شي مباراة جديدة مفتوحة دابا؟
-          شاركوها مع الإخوان باش يستافدو كاملين.
-        </p>
+        <div class="stat">
+          <strong>+12K</strong>
+          عضو
+        </div>
 
-        <div class="post-actions">
-          <span>❤️ إعجاب</span>
-          <span>💬 تعليق</span>
-          <span>↗️ مشاركة</span>
+        <div class="stat">
+          <strong>يومياً</strong>
+          فرص جديدة
         </div>
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
+    <section class="container" id="community">
 
-</main>
+      <div class="community">
 
+        <h2>👥 مجتمع فرصتك</h2>
 
-<footer>
+        <p>
+          شارك الفرص، سول، جاوب، وخلي الناس تستافد معاك.
+        </p>
 
-  <strong>فرصتك 🇲🇦</strong>
+        <div class="post">
 
-  <p>
-    منصة مغربية باش تلقى الفرصة المناسبة ليك.
-  </p>
+          <div class="post-user">
+            👤 عضو في فرصتك
+          </div>
 
-  <p>
-    © 2026 فرصتك - جميع الحقوق محفوظة
-  </p>
+          <p>
+            واش كاينة شي مباراة جديدة مفتوحة دابا؟
+            شاركوها مع الإخوان باش يستافدو كاملين.
+          </p>
 
-</footer>
+          <div class="post-actions">
+            <span>❤️ إعجاب</span>
+            <span>💬 تعليق</span>
+            <span>↗️ مشاركة</span>
+          </div>
 
+        </div>
 
-<script>
+      </div>
 
-  function searchOpportunities() {
+    </section>
 
-    const input = document.getElementById("searchInput").value.trim();
+  </main>
 
-    if (!input) {
-      alert("كتب شنو كتقلب عليه أولاً 🔎");
-      return;
-    }
+  <footer>
 
-    alert("غادي نقلبو على: " + input);
-  }
+    <strong>فرصتك 🇲🇦</strong>
 
+    <p>
+      منصة مغربية باش تلقى الفرصة المناسبة ليك.
+    </p>
 
-  function filterCategory(category) {
+    <p>
+      © 2026 فرصتك - جميع الحقوق محفوظة
+    </p>
 
-    document.getElementById("searchInput").value = category;
+  </footer>
 
-    document.getElementById("opportunities")
-      .scrollIntoView({
-        behavior: "smooth"
-      });
+  <script src="app.js"></script>
 
-  }
-
-
-  function loginMessage() {
-
-    alert("تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤");
-
-  }
-
-</script>
-<script>
-function searchOpportunities() {
-  const input = document.getElementById("searchInput").value.trim();
-
-  if (!input) {
-    alert("كتب شنو كتقلب عليه أولاً 🔎");
-    return;
-  }
-
-  alert("غادي نقلبو على: " + input);
-}
-
-function filterCategory(category) {
-  document.getElementById("searchInput").value = category;
-
-  document.getElementById("opportunities").scrollIntoView({
-    behavior: "smooth"
-  });
-}
-
-function loginMessage() {
-  alert("تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤");
-}
-</script>
 </body>
-</html>
+</html> 
