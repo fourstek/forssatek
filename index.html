@@ -356,7 +356,7 @@
 
     .modal-content {
       max-width: 650px;
-      margin: 70px auto;
+      margin: 50px auto;
       background: white;
       border-radius: 22px;
       padding: 30px;
@@ -395,6 +395,11 @@
       padding-left: 40px;
     }
 
+    .modal-description {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
     .modal-info {
       margin: 20px 0;
       display: grid;
@@ -417,6 +422,13 @@
       border-radius: 11px;
       font-weight: bold;
       margin-top: 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .apply-btn:hover {
+      background: #4927b8;
     }
 
     @media (max-width: 800px) {
@@ -510,11 +522,14 @@
     </div>
   </header>
 
+
   <main id="home">
 
     <section class="hero">
 
-      <h1>لقّي فرصتك وخلي الفرص تلقاك</h1>
+      <h1>
+        لقّي فرصتك وخلي الفرص تلقاك
+      </h1>
 
       <p>
         وظائف، مباريات، منح، تكوينات وفرص جديدة في المغرب
@@ -529,10 +544,11 @@
         >
 
         <button onclick="searchOpportunities()">
-          بحث
+          بحث 🔎
         </button>
 
       </div>
+
 
       <div class="categories">
 
@@ -584,118 +600,22 @@
       </div>
 
 
-      <div class="cards" id="opportunities">
+      <!-- الفرص غادي يتحطو هنا أوتوماتيكياً من opportunities.json -->
 
+      <div
+        class="cards"
+        id="opportunities"
+      >
 
-        <!-- الفرصة الأولى -->
-
-        <article class="card">
-
-          <span class="tag">
-            مباراة
-          </span>
-
-          <h3>
-            مباراة توظيف جديدة بالمغرب
-          </h3>
-
-          <p>
-            فرصة للترشح لمباراة توظيف بعدد من المناصب.
-          </p>
-
-          <div class="meta">
-            <span>🇲🇦 المغرب</span>
-            <span>جديدة</span>
-          </div>
-
-          <button
-            class="details-btn"
-            onclick="openOpportunity(
-              'مباراة توظيف جديدة بالمغرب',
-              'مباراة',
-              'المغرب',
-              'فرصة للترشح لمباراة توظيف بعدد من المناصب.',
-              'مفتوحة'
-            )"
-          >
-            شوف التفاصيل 👁️
-          </button>
-
-        </article>
-
-
-        <!-- الفرصة الثانية -->
-
-        <article class="card">
-
-          <span class="tag">
-            وظيفة
-          </span>
-
-          <h3>
-            فرصة عمل في شركة مغربية
-          </h3>
-
-          <p>
-            منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.
-          </p>
-
-          <div class="meta">
-            <span>💼 المغرب</span>
-            <span>جديدة</span>
-          </div>
-
-          <button
-            class="details-btn"
-            onclick="openOpportunity(
-              'فرصة عمل في شركة مغربية',
-              'وظيفة',
-              'المغرب',
-              'منصب شغل جديد مع إمكانية التقديم عبر الإنترنت.',
-              'مفتوحة'
-            )"
-          >
-            شوف التفاصيل 👁️
-          </button>
-
-        </article>
-
-
-        <!-- الفرصة الثالثة -->
-
-        <article class="card">
-
-          <span class="tag">
-            منحة
-          </span>
-
-          <h3>
-            منحة دراسية للطلبة
-          </h3>
-
-          <p>
-            فرصة للاستفادة من برنامج دعم ودراسة.
-          </p>
-
-          <div class="meta">
-            <span>🎓 المغرب</span>
-            <span>مفتوحة</span>
-          </div>
-
-          <button
-            class="details-btn"
-            onclick="openOpportunity(
-              'منحة دراسية للطلبة',
-              'منحة',
-              'المغرب',
-              'فرصة للاستفادة من برنامج دعم ودراسة.',
-              'مفتوحة'
-            )"
-          >
-            شوف التفاصيل 👁️
-          </button>
-
-        </article>
+        <div
+          style="
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+          "
+        >
+          ⏳ جاري تحميل الفرص...
+        </div>
 
       </div>
 
@@ -703,13 +623,13 @@
       <div class="stats">
 
         <div class="stat">
-          <strong>+250</strong>
-          فرصة نشطة
+          <strong id="opportunityCount">0</strong>
+          فرصة في المنصة
         </div>
 
         <div class="stat">
-          <strong>+12K</strong>
-          عضو
+          <strong>🇲🇦</strong>
+          فرص المغرب
         </div>
 
         <div class="stat">
@@ -722,7 +642,10 @@
     </section>
 
 
-    <section class="container" id="community">
+    <section
+      class="container"
+      id="community"
+    >
 
       <div class="community">
 
@@ -797,17 +720,27 @@
         ×
       </button>
 
-      <span class="tag" id="modalTag">
+
+      <span
+        class="tag"
+        id="modalTag"
+      >
         فرصة
       </span>
+
 
       <h2 id="modalTitle">
         تفاصيل الفرصة
       </h2>
 
-      <p id="modalDescription">
+
+      <p
+        class="modal-description"
+        id="modalDescription"
+      >
         تفاصيل الفرصة ستظهر هنا.
       </p>
+
 
       <div class="modal-info">
 
@@ -822,19 +755,35 @@
         </div>
 
         <div>
-          📅 الحالة:
+          📌 الحالة:
           <strong id="modalStatus"></strong>
+        </div>
+
+        <div>
+          🏢 المصدر:
+          <strong id="modalSource"></strong>
+        </div>
+
+        <div>
+          🗓️ تاريخ النشر:
+          <strong id="modalPublishDate"></strong>
+        </div>
+
+        <div>
+          ⏰ آخر أجل:
+          <strong id="modalDeadline"></strong>
         </div>
 
       </div>
 
-      <a
-        href="#"
+
+      <button
+        id="applyButton"
         class="apply-btn"
-        onclick="applyMessage(); return false;"
+        type="button"
       >
         🚀 قدّم الآن
-      </a>
+      </button>
 
     </div>
 
@@ -891,24 +840,29 @@
     }
 
 
-    function applyMessage() {
+    function loginMessage() {
 
-      alert("التقديم الحقيقي غادي نربطوه برابط الجهة الناشرة ديال الفرصة 🚀");
+      alert(
+        "تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤"
+      );
 
     }
 
 
-    document.addEventListener("keydown", function(event) {
+    document.addEventListener(
+      "keydown",
+      function(event) {
 
-      if (event.key === "Escape") {
+        if (event.key === "Escape") {
 
-        closeOpportunity();
+          closeOpportunity();
+
+        }
 
       }
-
-    });
+    );
 
   </script>
 
 </body>
-</html> 
+</html>
