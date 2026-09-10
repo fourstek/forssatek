@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,674 +9,180 @@
 
   <meta
     name="description"
-    content="فرصتك - منصة مغربية للوظائف والمباريات والمنح والتكوينات والفرص الجديدة."
+    content="فرصتك منصة مغربية للوظائف والمباريات والمنح والتكوينات."
   >
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Tahoma, sans-serif;
-      background: #f6f7fb;
-      color: #17152b;
-      line-height: 1.7;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button,
-    input {
-      font-family: inherit;
-    }
-
-    header {
-      background: white;
-      border-bottom: 1px solid #eee;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav {
-      max-width: 1150px;
-      margin: auto;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 900;
-      font-size: 23px;
-      color: #5b35d5;
-    }
-
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      background: #5b35d5;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
-
-    nav {
-      display: flex;
-      gap: 25px;
-      font-weight: bold;
-      color: #555;
-    }
-
-    nav a:hover {
-      color: #5b35d5;
-    }
-
-    .login {
-      background: #5b35d5;
-      color: white;
-      padding: 9px 18px;
-      border-radius: 10px;
-      font-weight: bold;
-      transition: 0.2s ease;
-    }
-
-    .login:hover {
-      transform: translateY(-2px);
-    }
-
-    .hero {
-      max-width: 1150px;
-      margin: 30px auto;
-      padding: 55px 30px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, #321477, #6b3fe2);
-      color: white;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(60, 35, 140, .18);
-    }
-
-    .hero h1 {
-      font-size: clamp(32px, 6vw, 55px);
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      opacity: .9;
-      margin-bottom: 28px;
-    }
-
-    .search {
-      max-width: 720px;
-      margin: auto;
-      display: flex;
-      background: white;
-      padding: 7px;
-      border-radius: 15px;
-    }
-
-    .search input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 13px;
-      font-size: 16px;
-      color: #333;
-      direction: rtl;
-    }
-
-    .search button {
-      border: none;
-      background: #5b35d5;
-      color: white;
-      padding: 0 25px;
-      border-radius: 11px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s ease;
-    }
-
-    .search button:hover {
-      transform: translateY(-2px);
-    }
-
-    .search:focus-within {
-      box-shadow: 0 0 0 4px rgba(91, 53, 213, 0.15);
-    }
-
-    .categories {
-      max-width: 850px;
-      margin: 25px auto 0;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .category {
-      background: rgba(255, 255, 255, .15);
-      border: 1px solid rgba(255, 255, 255, .2);
-      padding: 8px 17px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .category:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, .22);
-    }
-
-    .container {
-      max-width: 1150px;
-      margin: 45px auto;
-      padding: 0 20px;
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .section-title h2 {
-      font-size: 27px;
-    }
-
-    .section-title a {
-      color: #5b35d5;
-      font-weight: bold;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: white;
-      padding: 22px;
-      border-radius: 20px;
-      border: 1px solid #eee;
-      transition: .2s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, .07);
-    }
-
-    .tag {
-      display: inline-block;
-      background: #eee8ff;
-      color: #5b35d5;
-      padding: 5px 11px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .card h3 {
-      font-size: 19px;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: #666;
-      font-size: 14px;
-    }
-
-    .meta {
-      margin-top: 18px;
-      padding-top: 13px;
-      border-top: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      color: #777;
-      font-size: 13px;
-    }
-
-    .details-btn {
-      width: 100%;
-      margin-top: 18px;
-      border: none;
-      background: #5b35d5;
-      color: white;
-      padding: 11px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 15px;
-      transition: .2s;
-    }
-
-    .details-btn:hover {
-      transform: translateY(-2px);
-      background: #4927b8;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin: 35px 0;
-    }
-
-    .stat {
-      background: white;
-      border-radius: 18px;
-      padding: 25px;
-      text-align: center;
-      border: 1px solid #eee;
-    }
-
-    .stat strong {
-      display: block;
-      color: #5b35d5;
-      font-size: 30px;
-    }
-
-    .community {
-      background: #17132c;
-      color: white;
-      border-radius: 25px;
-      padding: 35px;
-    }
-
-    .community h2 {
-      margin-bottom: 8px;
-    }
-
-    .community p {
-      color: #c9c5d8;
-    }
-
-    .post {
-      background: white;
-      color: #222;
-      margin-top: 22px;
-      padding: 20px;
-      border-radius: 17px;
-    }
-
-    .post-user {
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .post-actions {
-      margin-top: 15px;
-      display: flex;
-      gap: 20px;
-      color: #777;
-      font-size: 14px;
-    }
-
-    footer {
-      margin-top: 50px;
-      background: white;
-      border-top: 1px solid #eee;
-      padding: 30px 20px;
-      text-align: center;
-      color: #777;
-    }
-
-    /* نافذة التفاصيل */
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .65);
-      z-index: 999;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .modal-content {
-      max-width: 650px;
-      margin: 50px auto;
-      background: white;
-      border-radius: 22px;
-      padding: 30px;
-      position: relative;
-      animation: modalShow .2s ease;
-    }
-
-    @keyframes modalShow {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .close {
-      position: absolute;
-      top: 12px;
-      left: 15px;
-      border: none;
-      background: #f1f1f1;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 20px;
-    }
-
-    .modal h2 {
-      color: #5b35d5;
-      margin-bottom: 15px;
-      padding-left: 40px;
-    }
-
-    .modal-description {
-      color: #555;
-      margin-bottom: 20px;
-    }
-
-    .modal-info {
-      margin: 20px 0;
-      display: grid;
-      gap: 10px;
-    }
-
-    .modal-info div {
-      background: #f7f7fb;
-      padding: 12px 15px;
-      border-radius: 10px;
-    }
-
-    .apply-btn {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: #5b35d5;
-      color: white;
-      padding: 13px;
-      border-radius: 11px;
-      font-weight: bold;
-      margin-top: 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .apply-btn:hover {
-      background: #4927b8;
-    }
-
-    @media (max-width: 800px) {
-
-      nav {
-        display: none;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        margin: 15px;
-        padding: 40px 18px;
-      }
-
-      .container {
-        padding: 0 15px;
-      }
-
-      .search button {
-        padding: 0 15px;
-      }
-    }
-
-    @media (max-width: 500px) {
-
-      .logo {
-        font-size: 20px;
-      }
-
-      .logo-icon {
-        width: 38px;
-        height: 38px;
-      }
-
-      .hero h1 {
-        font-size: 32px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .search {
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .search button {
-        min-height: 45px;
-      }
-
-      .modal-content {
-        margin: 30px auto;
-        padding: 22px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <header>
-    <div class="nav">
-
-      <a href="#" class="logo">
-        <span class="logo-icon">ف</span>
-        فرصتك
-      </a>
-
-      <nav>
-        <a href="#home">الرئيسية</a>
-        <a href="#opportunities">الفرص</a>
-        <a href="#community">المجتمع</a>
-      </nav>
-
-      <a
-        href="#"
-        class="login"
-        onclick="loginMessage(); return false;"
-      >
-        تسجيل الدخول
-      </a>
-
+  <!-- الهيدر -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🎯</span>
+      <span>فرصتك</span>
     </div>
+
+    <nav class="nav">
+      <a href="#home">الرئيسية</a>
+      <a href="#opportunities-section">الفرص</a>
+      <a href="#community">المجتمع</a>
+      <button class="login" onclick="loginMessage()">
+        👤 دخول
+      </button>
+    </nav>
   </header>
 
 
+  <!-- الواجهة الرئيسية -->
   <main id="home">
 
     <section class="hero">
 
-      <h1>
-        لقّي فرصتك وخلي الفرص تلقاك
-      </h1>
+      <div class="hero-content">
 
-      <p>
-        وظائف، مباريات، منح، تكوينات وفرص جديدة في المغرب
-      </p>
-
-      <div class="search">
-
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="شنو كتقلب عليه؟ مثال: أستاذ، مباراة، منحة..."
-        >
-
-        <button onclick="searchOpportunities()">
-          بحث 🔎
-        </button>
-
-      </div>
-
-
-      <div class="categories">
-
-        <span
-          class="category"
-          onclick="filterCategory('وظائف')"
-        >
-          💼 وظائف
+        <span class="hero-badge">
+          🇲🇦 فرص المغرب في مكان واحد
         </span>
 
-        <span
-          class="category"
-          onclick="filterCategory('مباريات')"
-        >
-          🏛️ مباريات
-        </span>
+        <h1>
+          لقّي فرصتك<br>
+          وخلي الفرص تلقاك
+        </h1>
 
-        <span
-          class="category"
-          onclick="filterCategory('منح')"
-        >
-          🎓 منح
-        </span>
+        <p>
+          وظائف، مباريات، منح، تكوينات وفرص جديدة في المغرب
+        </p>
 
-        <span
-          class="category"
-          onclick="filterCategory('تكوين')"
-        >
-          📚 تكوين
-        </span>
+        <div class="search">
+
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="شنو كتقلب عليه؟ مثال: أستاذ، تقني، مباراة..."
+          >
+
+          <button onclick="searchOpportunities()">
+            🔎 بحث
+          </button>
+
+        </div>
+
+        <div class="categories">
+
+          <button
+            class="category"
+            onclick="filterCategory('وظائف')">
+            💼 وظائف
+          </button>
+
+          <button
+            class="category"
+            onclick="filterCategory('مباريات')">
+            🏛️ مباريات
+          </button>
+
+          <button
+            class="category"
+            onclick="filterCategory('منح')">
+            🎓 منح
+          </button>
+
+          <button
+            class="category"
+            onclick="filterCategory('تكوين')">
+            📚 تكوين
+          </button>
+
+        </div>
 
       </div>
 
     </section>
 
 
-    <section class="container">
+    <!-- الفرص -->
+    <section
+      class="section"
+      id="opportunities-section"
+    >
 
       <div class="section-title">
 
+        <span>🔥 الفرص الجديدة</span>
+
         <h2>
-          🔥 فرص جديدة
+          آخر الفرص المتاحة
         </h2>
 
-        <a href="#opportunities">
-          شوف الكل
-        </a>
+        <p>
+          كن أول واحد يكتاشف الفرص الجديدة
+        </p>
 
       </div>
 
-
-      <!-- الفرص غادي يتحطو هنا أوتوماتيكياً من opportunities.json -->
 
       <div
         class="cards"
         id="opportunities"
       >
 
-        <div
-          style="
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-          "
-        >
-          ⏳ جاري تحميل الفرص...
-        </div>
-
-      </div>
-
-
-      <div class="stats">
-
-        <div class="stat">
-          <strong id="opportunityCount">0</strong>
-          فرصة في المنصة
-        </div>
-
-        <div class="stat">
-          <strong>🇲🇦</strong>
-          فرص المغرب
-        </div>
-
-        <div class="stat">
-          <strong>يومياً</strong>
-          فرص جديدة
-        </div>
+        <p style="text-align:center;">
+          جاري تحميل الفرص...
+        </p>
 
       </div>
 
     </section>
 
 
+    <!-- الإحصائيات -->
+    <section class="stats">
+
+      <div class="stat">
+        <strong id="opportunityCount">0</strong>
+        <span>🇲🇦 فرص المغرب</span>
+      </div>
+
+      <div class="stat">
+        <strong>24/7</strong>
+        <span>🔎 البحث عن الفرص</span>
+      </div>
+
+      <div class="stat">
+        <strong>🚀</strong>
+        <span>فرص جديدة باستمرار</span>
+      </div>
+
+    </section>
+
+
+    <!-- المجتمع -->
     <section
-      class="container"
+      class="community"
       id="community"
     >
 
-      <div class="community">
+      <div>
+
+        <span class="hero-badge">
+          👥 مجتمع فرصتك
+        </span>
 
         <h2>
-          👥 مجتمع فرصتك
+          الفرصة ما كتستناش
         </h2>
 
         <p>
-          شارك الفرص، سول، جاوب، وخلي الناس تستافد معاك.
+          تابع الفرص الجديدة، شاركها مع أصحابك،
+          وخليك ديما قريب من فرصتك.
         </p>
 
-        <div class="post">
+      </div>
 
-          <div class="post-user">
-            👤 عضو في فرصتك
-          </div>
-
-          <p>
-            واش كاينة شي مباراة جديدة مفتوحة دابا؟
-            شاركوها مع الإخوان باش يستافدو كاملين.
-          </p>
-
-          <div class="post-actions">
-            <span>❤️ إعجاب</span>
-            <span>💬 تعليق</span>
-            <span>↗️ مشاركة</span>
-          </div>
-
-        </div>
-
+      <div class="community-icon">
+        🚀
       </div>
 
     </section>
@@ -683,25 +190,26 @@
   </main>
 
 
-  <footer>
+  <!-- الفوتر -->
+  <footer class="footer">
 
-    <strong>
-      فرصتك 🇲🇦
-    </strong>
+    <div class="logo">
+      <span class="logo-icon">🎯</span>
+      <span>فرصتك</span>
+    </div>
 
     <p>
-      منصة مغربية باش تلقى الفرصة المناسبة ليك.
+      منصة مغربية لتسهيل الوصول إلى فرص العمل والتكوين والمنح والمباريات.
     </p>
 
-    <p>
+    <small>
       © 2026 فرصتك - جميع الحقوق محفوظة
-    </p>
+    </small>
 
   </footer>
 
 
   <!-- نافذة تفاصيل الفرصة -->
-
   <div
     class="modal"
     id="opportunityModal"
@@ -714,7 +222,7 @@
     >
 
       <button
-        class="close"
+        class="modal-close"
         onclick="closeOpportunity()"
       >
         ×
@@ -735,62 +243,67 @@
 
 
       <p
-        class="modal-description"
         id="modalDescription"
+        class="modal-description"
       >
-        تفاصيل الفرصة ستظهر هنا.
       </p>
 
 
       <div class="modal-info">
 
-        <div>
-          📂 التصنيف:
-          <strong id="modalCategory"></strong>
+        <div class="modal-info-item">
+          <span>📂 النوع</span>
+          <strong id="modalCategory">-</strong>
         </div>
 
-        <div>
-          📍 المكان:
-          <strong id="modalLocation"></strong>
+        <div class="modal-info-item">
+          <span>📍 المكان</span>
+          <strong id="modalLocation">-</strong>
         </div>
 
-        <div>
-          📌 الحالة:
-          <strong id="modalStatus"></strong>
+        <div class="modal-info-item">
+          <span>👥 عدد المناصب</span>
+          <strong id="modalPosts">-</strong>
         </div>
 
-        <div>
-          🏢 المصدر:
-          <strong id="modalSource"></strong>
+        <div class="modal-info-item">
+          <span>🏢 المصدر</span>
+          <strong id="modalSource">-</strong>
         </div>
 
-        <div>
-          🗓️ تاريخ النشر:
-          <strong id="modalPublishDate"></strong>
+        <div class="modal-info-item">
+          <span>📅 تاريخ النشر</span>
+          <strong id="modalPublishDate">-</strong>
         </div>
 
-        <div>
-          ⏰ آخر أجل:
-          <strong id="modalDeadline"></strong>
+        <div class="modal-info-item">
+          <span>⏰ آخر أجل</span>
+          <strong id="modalDeadline">-</strong>
         </div>
 
+        <div class="modal-info-item">
+          <span>📌 الحالة</span>
+          <strong id="modalStatus">مفتوحة</strong>
+        </div>
+
+      </div>
+
+
+      <div class="modal-warning">
+        ⚠️ تأكد من آخر أجل وشروط المشاركة قبل التقديم.
       </div>
 
 
       <button
         id="applyButton"
         class="apply-btn"
-        type="button"
       >
-        🚀 قدّم الآن
+        🚀 التقديم على الفرصة
       </button>
 
     </div>
 
   </div>
-
-
-  <script src="app.js"></script>
 
 
   <script>
@@ -803,19 +316,25 @@
       status
     ) {
 
-      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalTitle").textContent =
+        title || "تفاصيل الفرصة";
 
-      document.getElementById("modalTag").textContent = category;
+      document.getElementById("modalTag").textContent =
+        category || "فرصة";
 
-      document.getElementById("modalCategory").textContent = category;
+      document.getElementById("modalDescription").textContent =
+        description || "لا يوجد وصف متوفر حاليا.";
 
-      document.getElementById("modalLocation").textContent = location;
+      document.getElementById("modalCategory").textContent =
+        category || "-";
 
-      document.getElementById("modalDescription").textContent = description;
+      document.getElementById("modalLocation").textContent =
+        location || "-";
 
-      document.getElementById("modalStatus").textContent = status;
+      document.getElementById("modalStatus").textContent =
+        status || "مفتوحة";
 
-      document.getElementById("opportunityModal").style.display = "block";
+      document.getElementById("opportunityModal").classList.add("show");
 
       document.body.style.overflow = "hidden";
     }
@@ -823,18 +342,20 @@
 
     function closeOpportunity() {
 
-      document.getElementById("opportunityModal").style.display = "none";
+      document
+        .getElementById("opportunityModal")
+        .classList.remove("show");
 
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
     }
 
 
     function closeModalOutside(event) {
 
-      if (event.target.id === "opportunityModal") {
-
+      if (
+        event.target.id === "opportunityModal"
+      ) {
         closeOpportunity();
-
       }
 
     }
@@ -854,9 +375,7 @@
       function(event) {
 
         if (event.key === "Escape") {
-
           closeOpportunity();
-
         }
 
       }
@@ -864,5 +383,8 @@
 
   </script>
 
+
+  <script src="app.js"></script>
+
 </body>
-</html>
+</html> 
