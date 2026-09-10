@@ -27,42 +27,13 @@ async function loadOpportunities() {
   }
 }
 
-/* تحويل بعض الكلمات الفرنسية للعربية */
-function translateText(text) {
-  if (!text) return "";
-
-  const translations = {
-    "concours de recrutement": "مباراة توظيف",
-    "concours": "مباراة",
-    "recrutement": "توظيف",
-    "ingénieur": "مهندس",
-    "technicien": "تقني",
-    "inspecteur": "مفتش",
-    "officier": "ضابط",
-    "commissaire": "مفوض شرطة",
-    "gardien de la paix": "حارس أمن",
-    "administration": "الإدارة",
-    "province": "إقليم",
-    "ministère": "وزارة",
-    "fonction publique": "الوظيفة العمومية"
-  };
-
-  let result = text;
-
-  Object.keys(translations).forEach(word => {
-    const regex = new RegExp(word, "gi");
-    result = result.replace(regex, translations[word]);
-  });
-
-  return result;
-}
 
 function displayOpportunities(list) {
   const container = document.getElementById("opportunities");
 
   if (!container) return;
 
-  if (list.length === 0) {
+  if (!list || list.length === 0) {
     container.innerHTML = `
       <p style="text-align:center;">
         ما لقيناش فرص بهاد البحث 😕
@@ -73,25 +44,49 @@ function displayOpportunities(list) {
 
   container.innerHTML = list.map(opportunity => {
 
-    const title = translateText(opportunity.title);
-    const description = translateText(opportunity.description);
-    const category = translateText(opportunity.category);
+    const postsText =
+      opportunity.posts
+        ? `👥 ${opportunity.posts} منصب`
+        : "👥 عدد المناصب غير محدد";
+
+    const deadlineText =
+      opportunity.deadline
+        ? `📅 آخر أجل: ${opportunity.deadline}`
+        : "📅 آخر أجل: غير محدد";
 
     return `
       <div class="card">
 
-        <span class="tag">${category}</span>
+        <span class="tag">
+          ${opportunity.category || "فرصة"}
+        </span>
 
-        <h3>${title}</h3>
+        <h3>
+          ${opportunity.title || "فرصة عمل"}
+        </h3>
 
-        <p>${description}</p>
+        <p>
+          ${opportunity.description || "فرصة متاحة بالمغرب"}
+        </p>
 
         <div class="meta">
-          <span>📍 ${opportunity.location}</span>
-          <span>📅 آخر أجل: ${opportunity.deadline}</span>
+
+          <span>
+            📍 ${opportunity.location || "المغرب"}
+          </span>
+
+          <span>
+            ${postsText}
+          </span>
+
+          <span>
+            ${deadlineText}
+          </span>
+
         </div>
 
         <button
+          type="button"
           onclick="openOpportunityById(${opportunity.id})"
           class="details-btn">
           👁️ شوف التفاصيل
@@ -101,14 +96,25 @@ function displayOpportunities(list) {
     `;
 
   }).join("");
+
+  const countElement =
+    document.getElementById("opportunityCount");
+
+  if (countElement) {
+    countElement.textContent = list.length;
+  }
 }
 
+
 function searchOpportunities() {
-  const input = document
-    .getElementById("searchInput")
-    .value
-    .trim()
-    .toLowerCase();
+
+  const inputElement =
+    document.getElementById("searchInput");
+
+  if (!inputElement) return;
+
+  const input =
+    inputElement.value.trim().toLowerCase();
 
   if (!input) {
     alert("كتب شنو كتقلب عليه أولاً 🔎");
@@ -118,10 +124,10 @@ function searchOpportunities() {
   const results = opportunities.filter(opportunity => {
 
     const text = `
-      ${opportunity.title}
-      ${opportunity.category}
-      ${opportunity.location}
-      ${opportunity.description}
+      ${opportunity.title || ""}
+      ${opportunity.category || ""}
+      ${opportunity.location || ""}
+      ${opportunity.description || ""}
     `.toLowerCase();
 
     return text.includes(input);
@@ -129,64 +135,123 @@ function searchOpportunities() {
 
   displayOpportunities(results);
 
-  document
-    .getElementById("opportunities")
-    .scrollIntoView({ behavior: "smooth" });
+  const container =
+    document.getElementById("opportunities");
+
+  if (container) {
+    container.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
 
   if (results.length === 0) {
     alert("ما لقيناش فرصة بهاد البحث 😕");
   }
 }
 
+
 function filterCategory(category) {
 
-  document.getElementById("searchInput").value = category;
+  const inputElement =
+    document.getElementById("searchInput");
 
-  const results = opportunities.filter(opportunity =>
-    opportunity.category
+  if (inputElement) {
+    inputElement.value = category;
+  }
+
+  const searchCategory =
+    category
       .toLowerCase()
-      .includes(
-        category
-          .toLowerCase()
-          .replace("وظائف", "وظيفة")
-      )
-  );
+      .replace("وظائف", "وظيفة");
+
+  const results =
+    opportunities.filter(opportunity => {
+
+      const opportunityCategory =
+        (opportunity.category || "")
+          .toLowerCase();
+
+      return opportunityCategory.includes(
+        searchCategory
+      );
+    });
 
   displayOpportunities(results);
 
-  document
-    .getElementById("opportunities")
-    .scrollIntoView({ behavior: "smooth" });
+  const container =
+    document.getElementById("opportunities");
+
+  if (container) {
+    container.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
 
   if (results.length === 0) {
     alert("ما كايناش فرص فهاد التصنيف دابا.");
   }
 }
 
+
 function openOpportunityById(id) {
 
-  const opportunity = opportunities.find(
-    item => item.id === id
-  );
+  const opportunity =
+    opportunities.find(
+      item => Number(item.id) === Number(id)
+    );
 
-  if (!opportunity) return;
+  if (!opportunity) {
+    alert("تعذر العثور على تفاصيل الفرصة.");
+    return;
+  }
+
 
   openOpportunity(
-    translateText(opportunity.title),
-    translateText(opportunity.category),
-    opportunity.location,
-    translateText(opportunity.description),
+    opportunity.title || "تفاصيل الفرصة",
+    opportunity.category || "فرصة",
+    opportunity.location || "المغرب",
+    opportunity.description || "لا يوجد وصف متوفر حاليا.",
     "مفتوحة"
   );
 
-  document.getElementById("modalSource").textContent =
-    opportunity.source || "";
 
-  document.getElementById("modalPublishDate").textContent =
-    opportunity.publishDate || "";
+  const source =
+    document.getElementById("modalSource");
 
-  document.getElementById("modalDeadline").textContent =
-    opportunity.deadline || "";
+  if (source) {
+    source.textContent =
+      opportunity.source || "غير محدد";
+  }
+
+
+  const publishDate =
+    document.getElementById("modalPublishDate");
+
+  if (publishDate) {
+    publishDate.textContent =
+      opportunity.publishDate || "غير محدد";
+  }
+
+
+  const deadline =
+    document.getElementById("modalDeadline");
+
+  if (deadline) {
+    deadline.textContent =
+      opportunity.deadline || "غير محدد";
+  }
+
+
+  const posts =
+    document.getElementById("modalPosts");
+
+  if (posts) {
+    posts.textContent =
+      opportunity.posts
+        ? opportunity.posts + " منصب"
+        : "غير محدد";
+  }
+
 
   const applyButton =
     document.getElementById("applyButton");
@@ -212,14 +277,21 @@ function openOpportunityById(id) {
         );
 
       }
+
     };
+
   }
+
 }
 
+
 function loginMessage() {
+
   alert(
     "تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤"
   );
+
 }
 
-loadOpportunities();
+
+loadOpportunities(); 
