@@ -27,13 +27,12 @@ async function loadOpportunities() {
   }
 }
 
-
 function displayOpportunities(list) {
   const container = document.getElementById("opportunities");
 
   if (!container) return;
 
-  if (!list || list.length === 0) {
+  if (list.length === 0) {
     container.innerHTML = `
       <p style="text-align:center;">
         ما لقيناش فرص بهاد البحث 😕
@@ -42,79 +41,34 @@ function displayOpportunities(list) {
     return;
   }
 
-  container.innerHTML = list.map(opportunity => {
+  container.innerHTML = list.map(opportunity => `
+    <div class="card">
+      <span class="tag">${opportunity.category}</span>
 
-    const postsText =
-      opportunity.posts
-        ? `👥 ${opportunity.posts} منصب`
-        : "👥 عدد المناصب غير محدد";
+      <h3>${opportunity.title}</h3>
 
-    const deadlineText =
-      opportunity.deadline
-        ? `📅 آخر أجل: ${opportunity.deadline}`
-        : "📅 آخر أجل: غير محدد";
+      <p>${opportunity.description}</p>
 
-    return `
-      <div class="card">
-
-        <span class="tag">
-          ${opportunity.category || "فرصة"}
-        </span>
-
-        <h3>
-          ${opportunity.title || "فرصة عمل"}
-        </h3>
-
-        <p>
-          ${opportunity.description || "فرصة متاحة بالمغرب"}
-        </p>
-
-        <div class="meta">
-
-          <span>
-            📍 ${opportunity.location || "المغرب"}
-          </span>
-
-          <span>
-            ${postsText}
-          </span>
-
-          <span>
-            ${deadlineText}
-          </span>
-
-        </div>
-
-        <button
-          type="button"
-          onclick="openOpportunityById(${opportunity.id})"
-          class="details-btn">
-          👁️ شوف التفاصيل
-        </button>
-
+      <div class="meta">
+        <span>📍 ${opportunity.location}</span>
+        <span>📅 آخر أجل: ${opportunity.deadline}</span>
       </div>
-    `;
 
-  }).join("");
-
-  const countElement =
-    document.getElementById("opportunityCount");
-
-  if (countElement) {
-    countElement.textContent = list.length;
-  }
+      <button
+        onclick="openOpportunityById(${opportunity.id})"
+        class="details-btn">
+        👁️ شوف التفاصيل
+      </button>
+    </div>
+  `).join("");
 }
 
-
 function searchOpportunities() {
-
-  const inputElement =
-    document.getElementById("searchInput");
-
-  if (!inputElement) return;
-
-  const input =
-    inputElement.value.trim().toLowerCase();
+  const input = document
+    .getElementById("searchInput")
+    .value
+    .trim()
+    .toLowerCase();
 
   if (!input) {
     alert("كتب شنو كتقلب عليه أولاً 🔎");
@@ -122,12 +76,11 @@ function searchOpportunities() {
   }
 
   const results = opportunities.filter(opportunity => {
-
     const text = `
-      ${opportunity.title || ""}
-      ${opportunity.category || ""}
-      ${opportunity.location || ""}
-      ${opportunity.description || ""}
+      ${opportunity.title}
+      ${opportunity.category}
+      ${opportunity.location}
+      ${opportunity.description}
     `.toLowerCase();
 
     return text.includes(input);
@@ -135,163 +88,72 @@ function searchOpportunities() {
 
   displayOpportunities(results);
 
-  const container =
-    document.getElementById("opportunities");
-
-  if (container) {
-    container.scrollIntoView({
-      behavior: "smooth"
-    });
-  }
+  document.getElementById("opportunities").scrollIntoView({
+    behavior: "smooth"
+  });
 
   if (results.length === 0) {
     alert("ما لقيناش فرصة بهاد البحث 😕");
   }
 }
 
-
 function filterCategory(category) {
+  document.getElementById("searchInput").value = category;
 
-  const inputElement =
-    document.getElementById("searchInput");
-
-  if (inputElement) {
-    inputElement.value = category;
-  }
-
-  const searchCategory =
-    category
+  const results = opportunities.filter(opportunity =>
+    opportunity.category
       .toLowerCase()
-      .replace("وظائف", "وظيفة");
-
-  const results =
-    opportunities.filter(opportunity => {
-
-      const opportunityCategory =
-        (opportunity.category || "")
-          .toLowerCase();
-
-      return opportunityCategory.includes(
-        searchCategory
-      );
-    });
+      .includes(category.toLowerCase().replace("وظائف", "وظيفة"))
+  );
 
   displayOpportunities(results);
 
-  const container =
-    document.getElementById("opportunities");
-
-  if (container) {
-    container.scrollIntoView({
-      behavior: "smooth"
-    });
-  }
+  document.getElementById("opportunities").scrollIntoView({
+    behavior: "smooth"
+  });
 
   if (results.length === 0) {
     alert("ما كايناش فرص فهاد التصنيف دابا.");
   }
 }
 
-
 function openOpportunityById(id) {
+  const opportunity = opportunities.find(item => item.id === id);
 
-  const opportunity =
-    opportunities.find(
-      item => Number(item.id) === Number(id)
-    );
-
-  if (!opportunity) {
-    alert("تعذر العثور على تفاصيل الفرصة.");
-    return;
-  }
-
+  if (!opportunity) return;
 
   openOpportunity(
-    opportunity.title || "تفاصيل الفرصة",
-    opportunity.category || "فرصة",
-    opportunity.location || "المغرب",
-    opportunity.description || "لا يوجد وصف متوفر حاليا.",
+    opportunity.title,
+    opportunity.category,
+    opportunity.location,
+    opportunity.description,
     "مفتوحة"
   );
 
+  document.getElementById("modalSource").textContent =
+    opportunity.source;
 
-  const source =
-    document.getElementById("modalSource");
+  document.getElementById("modalPublishDate").textContent =
+    opportunity.publishDate;
 
-  if (source) {
-    source.textContent =
-      opportunity.source || "غير محدد";
-  }
+  document.getElementById("modalDeadline").textContent =
+    opportunity.deadline;
 
-
-  const publishDate =
-    document.getElementById("modalPublishDate");
-
-  if (publishDate) {
-    publishDate.textContent =
-      opportunity.publishDate || "غير محدد";
-  }
-
-
-  const deadline =
-    document.getElementById("modalDeadline");
-
-  if (deadline) {
-    deadline.textContent =
-      opportunity.deadline || "غير محدد";
-  }
-
-
-  const posts =
-    document.getElementById("modalPosts");
-
-  if (posts) {
-    posts.textContent =
-      opportunity.posts
-        ? opportunity.posts + " منصب"
-        : "غير محدد";
-  }
-
-
-  const applyButton =
-    document.getElementById("applyButton");
+  const applyButton = document.getElementById("applyButton");
 
   if (applyButton) {
-
     applyButton.onclick = function () {
-
-      if (
-        opportunity.applyUrl &&
-        opportunity.applyUrl !== "#"
-      ) {
-
-        window.open(
-          opportunity.applyUrl,
-          "_blank"
-        );
-
+      if (opportunity.applyUrl && opportunity.applyUrl !== "#") {
+        window.open(opportunity.applyUrl, "_blank");
       } else {
-
-        alert(
-          "رابط التقديم غادي نضيفوه من بعد 🚀"
-        );
-
+        alert("رابط التقديم غادي نضيفوه من بعد 🚀");
       }
-
     };
-
   }
-
 }
-
 
 function loginMessage() {
-
-  alert(
-    "تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤"
-  );
-
+  alert("تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤");
 }
-
 
 loadOpportunities(); 
