@@ -1,4 +1,4 @@
-/* فرصتك - الستايل الأساسي */
+/* فرصتك - التصميم الاحترافي */
 
 html {
   scroll-behavior: smooth;
@@ -11,28 +11,125 @@ html {
 
 button,
 .category,
-.login {
-  transition: 0.2s ease;
+.login,
+.card,
+.details-btn {
+  transition: all 0.25s ease;
 }
 
-button:hover,
-.login:hover {
-  transform: translateY(-2px);
-}
-
-.search:focus-within {
-  box-shadow: 0 0 0 4px rgba(91, 53, 213, 0.15);
-}
-
+/* البطاقات */
 .card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #eee8ff;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 6px 22px rgba(50, 30, 100, 0.08);
   cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(50, 30, 100, 0.14);
+  border-color: #d9ceff;
 }
 
 .card:active {
   transform: scale(0.99);
 }
 
+/* الخط فوق البطاقة */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #5b35d5, #8b6ee8);
+}
+
+/* عنوان الفرصة */
+.card h3 {
+  line-height: 1.7;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  color: #21153f;
+  font-weight: 800;
+}
+
+/* وصف الفرصة */
+.card p {
+  line-height: 1.8;
+  color: #666;
+}
+
+/* المعلومات */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.meta span {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #f7f4ff;
+  color: #5b35d5;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* التصنيف */
+.tag {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 20px;
+  background: #eee9ff;
+  color: #5b35d5;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* زر التفاصيل */
+.details-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 11px;
+  background: #5b35d5;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.details-btn:hover {
+  background: #4825bd;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(91, 53, 213, 0.25);
+}
+
+/* البحث */
+.search:focus-within {
+  box-shadow: 0 0 0 4px rgba(91, 53, 213, 0.15);
+}
+
+/* الأزرار */
+button:hover,
+.login:hover {
+  transform: translateY(-2px);
+}
+
+/* التصنيفات */
+.category:hover {
+  transform: translateY(-3px);
+}
+
+/* الهاتف */
 @media (max-width: 500px) {
+
   .logo {
     font-size: 20px;
   }
@@ -44,10 +141,12 @@ button:hover,
 
   .hero h1 {
     font-size: 32px;
+    line-height: 1.4;
   }
 
   .hero p {
     font-size: 16px;
+    line-height: 1.8;
   }
 
   .search {
@@ -57,5 +156,25 @@ button:hover,
 
   .search button {
     min-height: 45px;
+  }
+
+  .card {
+    border-radius: 15px;
+  }
+
+  .card h3 {
+    font-size: 18px;
+  }
+
+  .meta {
+    flex-direction: column;
+  }
+
+  .meta span {
+    width: fit-content;
+  }
+
+  .details-btn {
+    min-height: 46px;
   }
 }
