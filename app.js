@@ -1,159 +1,148 @@
 let opportunities = [];
 
-async function loadOpportunities() {
-  try {
-    const response = await fetch("opportunities.json");
+async function loadOpportunities() { try { const response = await fetch("opportunities.json");
 
-    if (!response.ok) {
-      throw new Error("تعذر تحميل الفرص");
-    }
-
-    opportunities = await response.json();
-
-    displayOpportunities(opportunities);
-
-  } catch (error) {
-    console.error(error);
-
-    const container = document.getElementById("opportunities");
-
-    if (container) {
-      container.innerHTML = `
-        <p style="text-align:center;">
-          وقع مشكل في تحميل الفرص 😕
-        </p>
-      `;
-    }
-  }
+if (!response.ok) {
+  throw new Error("تعذر تحميل الفرص");
 }
 
-function displayOpportunities(list) {
-  const container = document.getElementById("opportunities");
+opportunities = await response.json();
 
-  if (!container) return;
+displayOpportunities(opportunities);
+} catch (error) { console.error(error);
 
-  if (list.length === 0) {
-    container.innerHTML = `
-      <p style="text-align:center;">
-        ما لقيناش فرص بهاد البحث 😕
-      </p>
-    `;
-    return;
-  }
+const container = document.getElementById("opportunities");
 
-  container.innerHTML = list.map(opportunity => `
-    <div class="card">
-      <span class="tag">${opportunity.category}</span>
+if (container) {
+  container.innerHTML = `
+    <p style="text-align:center;">
+      وقع مشكل في تحميل الفرص 😕
+    </p>
+  `;
+}
+} }
 
-      <h3>${opportunity.title}</h3>
+/* تحويل بعض الكلمات الفرنسية للعربية */ function translateText(text) { if (!text) return "";
 
-      <p>${opportunity.description}</p>
+const translations = { "concours de recrutement": "مباراة توظيف", "concours": "مباراة", "recrutement": "توظيف", "ingénieur": "مهندس", "technicien": "تقني", "inspecteur": "مفتش", "officier": "ضابط", "commissaire": "مفوض شرطة", "gardien de la paix": "حارس أمن", "administration": "الإدارة", "province": "إقليم", "ministère": "وزارة", "fonction publique": "الوظيفة العمومية" };
 
-      <div class="meta">
-        <span>📍 ${opportunity.location}</span>
-        <span>📅 آخر أجل: ${opportunity.deadline}</span>
-      </div>
+let result = text;
 
-      <button
-        onclick="openOpportunityById(${opportunity.id})"
-        class="details-btn">
-        👁️ شوف التفاصيل
-      </button>
+Object.keys(translations).forEach(word => { const regex = new RegExp(word, "gi"); result = result.replace(regex, translations[word]); });
+
+return result; }
+
+function displayOpportunities(list) { const container = document.getElementById("opportunities");
+
+if (!container) return;
+
+if (list.length === 0) { container.innerHTML = <p style="text-align:center;"> ما لقيناش فرص بهاد البحث 😕 </p>; return; }
+
+container.innerHTML = list.map(opportunity => {
+
+const title = translateText(opportunity.title);
+const description = translateText(opportunity.description);
+const category = translateText(opportunity.category);
+
+return `
+  <div class="card">
+
+    <span class="tag">${category}</span>
+
+    <h3>${title}</h3>
+
+    <p>${description}</p>
+
+    <div class="meta">
+      <span>📍 ${opportunity.location}</span>
+      <span>📅 آخر أجل: ${opportunity.deadline}</span>
     </div>
-  `).join("");
-}
 
-function searchOpportunities() {
-  const input = document
-    .getElementById("searchInput")
-    .value
-    .trim()
-    .toLowerCase();
+    <button
+      onclick="openOpportunityById(${opportunity.id})"
+      class="details-btn">
+      👁️ شوف التفاصيل
+    </button>
 
-  if (!input) {
-    alert("كتب شنو كتقلب عليه أولاً 🔎");
-    return;
-  }
+  </div>
+`;
+}).join(""); }
 
-  const results = opportunities.filter(opportunity => {
-    const text = `
-      ${opportunity.title}
-      ${opportunity.category}
-      ${opportunity.location}
-      ${opportunity.description}
-    `.toLowerCase();
+function searchOpportunities() { const input = document .getElementById("searchInput") .value .trim() .toLowerCase();
 
-    return text.includes(input);
-  });
+if (!input) { alert("كتب شنو كتقلب عليه أولاً 🔎"); return; }
 
-  displayOpportunities(results);
+const results = opportunities.filter(opportunity => {
 
-  document.getElementById("opportunities").scrollIntoView({
-    behavior: "smooth"
-  });
+const text = `
+  ${opportunity.title}
+  ${opportunity.category}
+  ${opportunity.location}
+  ${opportunity.description}
+`.toLowerCase();
 
-  if (results.length === 0) {
-    alert("ما لقيناش فرصة بهاد البحث 😕");
-  }
-}
+return text.includes(input);
+});
+
+displayOpportunities(results);
+
+document.getElementById("opportunities").scrollIntoView({ behavior: "smooth" });
+
+if (results.length === 0) { alert("ما لقيناش فرصة بهاد البحث 😕"); } }
 
 function filterCategory(category) {
-  document.getElementById("searchInput").value = category;
 
-  const results = opportunities.filter(opportunity =>
-    opportunity.category
-      .toLowerCase()
-      .includes(category.toLowerCase().replace("وظائف", "وظيفة"))
-  );
+document.getElementById("searchInput").value = category;
 
-  displayOpportunities(results);
+const results = opportunities.filter(opportunity => opportunity.category .toLowerCase() .includes( category .toLowerCase() .replace("وظائف", "وظيفة") ) );
 
-  document.getElementById("opportunities").scrollIntoView({
-    behavior: "smooth"
-  });
+displayOpportunities(results);
 
-  if (results.length === 0) {
-    alert("ما كايناش فرص فهاد التصنيف دابا.");
-  }
-}
+document.getElementById("opportunities").scrollIntoView({ behavior: "smooth" });
+
+if (results.length === 0) { alert("ما كايناش فرص فهاد التصنيف دابا."); } }
 
 function openOpportunityById(id) {
-  const opportunity = opportunities.find(item => item.id === id);
 
-  if (!opportunity) return;
+const opportunity = opportunities.find( item => item.id === id );
 
-  openOpportunity(
-    opportunity.title,
-    opportunity.category,
-    opportunity.location,
-    opportunity.description,
-    "مفتوحة"
-  );
+if (!opportunity) return;
 
-  document.getElementById("modalSource").textContent =
-    opportunity.source;
+openOpportunity( translateText(opportunity.title), translateText(opportunity.category), opportunity.location, translateText(opportunity.description), "مفتوحة" );
 
-  document.getElementById("modalPublishDate").textContent =
-    opportunity.publishDate;
+document.getElementById("modalSource").textContent = opportunity.source;
 
-  document.getElementById("modalDeadline").textContent =
-    opportunity.deadline;
+document.getElementById("modalPublishDate").textContent = opportunity.publishDate;
 
-  const applyButton = document.getElementById("applyButton");
+document.getElementById("modalDeadline").textContent = opportunity.deadline;
 
-  if (applyButton) {
-    applyButton.onclick = function () {
-      if (opportunity.applyUrl && opportunity.applyUrl !== "#") {
-        window.open(opportunity.applyUrl, "_blank");
-      } else {
-        alert("رابط التقديم غادي نضيفوه من بعد 🚀");
-      }
-    };
+const applyButton = document.getElementById("applyButton");
+
+if (applyButton) {
+
+applyButton.onclick = function () {
+
+  if (
+    opportunity.applyUrl &&
+    opportunity.applyUrl !== "#"
+  ) {
+
+    window.open(
+      opportunity.applyUrl,
+      "_blank"
+    );
+
+  } else {
+
+    alert(
+      "رابط التقديم غادي نضيفوه من بعد 🚀"
+    );
+
   }
-}
 
-function loginMessage() {
-  alert("تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤");
-}
+};
+} }
+
+function loginMessage() { alert( "تسجيل الدخول غادي نفعّلوه فمرحلة الحسابات 👤" ); }
 
 loadOpportunities();
