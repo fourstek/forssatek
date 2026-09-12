@@ -126,34 +126,6 @@
     "id": 9
   },
   {
-    "title": "مباراة توظيف : مهندس دولة 1er الدرجة - السلم 11",
-    "originalTitle": "Concours de recrutement : Ingénieur d'Etat 1er grade - echelle 11",
-    "category": "مباريات",
-    "location": "المغرب",
-    "description": "فرصة توظيف عمومية - 57 منصب",
-    "deadline": "15 Septembre 2026",
-    "publishDate": "",
-    "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/27a263ca-68f6-492c-a533-4848ac57d58f",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/27a263ca-68f6-492c-a533-4848ac57d58f",
-    "posts": 57,
-    "id": 10
-  },
-  {
-    "title": "مباراة توظيف : Actuaire Junior",
-    "originalTitle": "Concours de recrutement : Actuaire Junior",
-    "category": "مباريات",
-    "location": "المغرب",
-    "description": "فرصة توظيف عمومية - 1 منصب",
-    "deadline": "غير محدد",
-    "publishDate": "",
-    "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/9643ae15-0c73-49c7-b69e-d4c6347549ef",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/9643ae15-0c73-49c7-b69e-d4c6347549ef",
-    "posts": 1,
-    "id": 11
-  },
-  {
     "title": "مباراة توظيف : Directeur Administratif et Financier",
     "originalTitle": "Concours de recrutement : Directeur Administratif et Financier",
     "category": "مباريات",
@@ -165,7 +137,7 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/fe80b2a6-5f72-463b-bcfc-d09d283f5483",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/fe80b2a6-5f72-463b-bcfc-d09d283f5483",
     "posts": null,
-    "id": 12
+    "id": 10
   },
   {
     "title": "مباراة توظيف : توظيف des مهندسs et cadres",
@@ -178,6 +150,34 @@
     "source": "emploi-public.ma",
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/25524093-c088-4667-847c-90da65538b83",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/25524093-c088-4667-847c-90da65538b83",
+    "posts": null,
+    "id": 11
+  },
+  {
+    "title": "مباراة توظيف : توظيف des agents de maîtrise",
+    "originalTitle": "Concours de recrutement : Recrutement des agents de maîtrise",
+    "category": "مباريات",
+    "location": "المغرب",
+    "description": "فرصة توظيف عمومية",
+    "deadline": "غير محدد",
+    "publishDate": "",
+    "source": "emploi-public.ma",
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/1c1cb6dd-7881-410f-94d0-421b2f7d653b",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/1c1cb6dd-7881-410f-94d0-421b2f7d653b",
+    "posts": null,
+    "id": 12
+  },
+  {
+    "title": "مباراة توظيف : توظيف des agents d’exécution",
+    "originalTitle": "Concours de recrutement : Recrutement des agents d’exécution",
+    "category": "مباريات",
+    "location": "المغرب",
+    "description": "فرصة توظيف عمومية",
+    "deadline": "غير محدد",
+    "publishDate": "",
+    "source": "emploi-public.ma",
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/6c9694eb-651d-44d2-ab69-4b1e4194fd9a",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/6c9694eb-651d-44d2-ab69-4b1e4194fd9a",
     "posts": null,
     "id": 13
   }
