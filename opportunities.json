@@ -1,5 +1,19 @@
 [
   {
+    "title": "مباراة توظيف : مهندس دولة 1er الدرجة - السلم 11",
+    "originalTitle": "Concours de recrutement : Ingénieur d'Etat 1er grade - echelle 11",
+    "category": "مباريات",
+    "location": "المغرب",
+    "description": "فرصة توظيف عمومية",
+    "deadline": "غير محدد",
+    "publishDate": "",
+    "source": "emploi-public.ma",
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/0bcfe0ed-c273-4358-947a-76594b2f2dde",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/0bcfe0ed-c273-4358-947a-76594b2f2dde",
+    "posts": null,
+    "id": 1
+  },
+  {
     "title": "مباراة توظيف : تقني من الدرجة الثالثة - السلم 9",
     "originalTitle": "Concours de recrutement : Technicien de 3ème grade - echelle 9",
     "category": "مباريات",
@@ -11,7 +25,7 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/163393e4-8773-494e-ba2d-ad108262c366",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/163393e4-8773-494e-ba2d-ad108262c366",
     "posts": 1,
-    "id": 1
+    "id": 2
   },
   {
     "title": "مباراة توظيف : متصرف 3ème الدرجة - السلم 10",
@@ -25,7 +39,7 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/610a541b-4cfe-4d44-8cac-c963b740652f",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/610a541b-4cfe-4d44-8cac-c963b740652f",
     "posts": 1,
-    "id": 2
+    "id": 3
   },
   {
     "title": "مباراة توظيف : تقني من الدرجة الثالثة - السلم 9",
@@ -39,21 +53,21 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/57d80740-6401-4401-88e8-1545790f97b6",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/57d80740-6401-4401-88e8-1545790f97b6",
     "posts": 6,
-    "id": 3
+    "id": 4
   },
   {
     "title": "مباراة توظيف : متصرف 2ème الدرجة - السلم 11",
     "originalTitle": "Concours de recrutement : Administrateur 2ème grade - echelle 11",
     "category": "مباريات",
     "location": "المغرب",
-    "description": "فرصة توظيف عمومية - 57 منصب",
-    "deadline": "15 Septembre 2026",
+    "description": "فرصة توظيف عمومية",
+    "deadline": "غير محدد",
     "publishDate": "",
     "source": "emploi-public.ma",
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/258ae7cf-4ace-405f-8c04-4eaa8649eb9d",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/258ae7cf-4ace-405f-8c04-4eaa8649eb9d",
-    "posts": 57,
-    "id": 4
+    "posts": null,
+    "id": 5
   },
   {
     "title": "مباراة توظيف : Inspecteur du travail de 3ème الدرجة - السلم 10",
@@ -67,7 +81,7 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/a1b4a843-7eaa-488b-b9d1-8910a73d24cd",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/a1b4a843-7eaa-488b-b9d1-8910a73d24cd",
     "posts": 10,
-    "id": 5
+    "id": 6
   },
   {
     "title": "مباراة توظيف : Inspecteur du travail de 2ème الدرجة - السلم 11",
@@ -81,7 +95,7 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/aa36d343-5ddc-4365-9405-9ead81bbf772",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/aa36d343-5ddc-4365-9405-9ead81bbf772",
     "posts": 5,
-    "id": 6
+    "id": 7
   },
   {
     "title": "مباراة توظيف : مهندس دولة 1er الدرجة - السلم 11",
@@ -95,7 +109,7 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/ea15f5d2-3657-48c0-83d4-da029a7af7ca",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/ea15f5d2-3657-48c0-83d4-da029a7af7ca",
     "posts": 6,
-    "id": 7
+    "id": 8
   },
   {
     "title": "مباراة توظيف : Médecins premier الدرجة - السلم 11",
@@ -109,75 +123,61 @@
     "applyUrl": "https://www.emploi-public.ma/fr/concours/details/4bce4152-8b28-45d0-b869-c883f18864db",
     "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/4bce4152-8b28-45d0-b869-c883f18864db",
     "posts": 1,
-    "id": 8
-  },
-  {
-    "title": "مباراة توظيف : مهندس دولة 1er الدرجة - السلم 11",
-    "originalTitle": "Concours de recrutement : Ingénieur d'Etat 1er grade - echelle 11",
-    "category": "مباريات",
-    "location": "المغرب",
-    "description": "فرصة توظيف عمومية - 1 منصب",
-    "deadline": "22 Septembre 2026",
-    "publishDate": "",
-    "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/a25bed63-cd17-4f71-abb9-60827ddb43c0",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/a25bed63-cd17-4f71-abb9-60827ddb43c0",
-    "posts": 1,
     "id": 9
   },
   {
-    "title": "مباراة توظيف : AGENT DE HAUTE MAITRISE EN GENIE CIVIL OU GROS OEUVRES",
-    "originalTitle": "Concours de recrutement : AGENT DE HAUTE MAITRISE EN GENIE CIVIL OU GROS OEUVRES",
+    "title": "مباراة توظيف : تقني من الدرجة الثالثة - السلم 9",
+    "originalTitle": "Concours de recrutement : Technicien de 3ème grade - echelle 9",
     "category": "مباريات",
     "location": "المغرب",
-    "description": "فرصة توظيف عمومية",
-    "deadline": "غير محدد",
+    "description": "فرصة توظيف عمومية - 6 منصب",
+    "deadline": "21 Septembre 2026",
     "publishDate": "",
     "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/30fe3217-0cd9-4044-a4fb-86fc86f324ca",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/30fe3217-0cd9-4044-a4fb-86fc86f324ca",
-    "posts": null,
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/5d458ac0-79d2-4fa6-bcc2-e95e8d29bd6d",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/5d458ac0-79d2-4fa6-bcc2-e95e8d29bd6d",
+    "posts": 6,
     "id": 10
   },
   {
-    "title": "مباراة توظيف : AGENT DE HAUTE MAITRISE EN SECRETARIAT DE DIRECTION",
-    "originalTitle": "Concours de recrutement : AGENT DE HAUTE MAITRISE EN SECRETARIAT DE DIRECTION",
+    "title": "مباراة توظيف : تقني d’Exploitation Audiovisuelle",
+    "originalTitle": "Concours de recrutement : Technicien d’Exploitation Audiovisuelle",
     "category": "مباريات",
     "location": "المغرب",
     "description": "فرصة توظيف عمومية",
     "deadline": "غير محدد",
     "publishDate": "",
     "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/a475ad0f-9250-46fe-92d1-509c3c85fc0d",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/a475ad0f-9250-46fe-92d1-509c3c85fc0d",
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/dd81c6f2-567c-46a6-987e-eb0e069ae54f",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/dd81c6f2-567c-46a6-987e-eb0e069ae54f",
     "posts": null,
     "id": 11
   },
   {
-    "title": "مباراة توظيف : توظيف de 140 Collaboratrices et Collaborateurs à la SRM-DT",
-    "originalTitle": "Concours de recrutement : Recrutement de 140 Collaboratrices et Collaborateurs à la SRM-DT",
+    "title": "مباراة توظيف : تقني en génie climatique",
+    "originalTitle": "Concours de recrutement : Technicien en génie climatique",
     "category": "مباريات",
     "location": "المغرب",
     "description": "فرصة توظيف عمومية",
     "deadline": "غير محدد",
     "publishDate": "",
     "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/fee525a8-27ef-4f45-b062-59e7d34cb4cf",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/fee525a8-27ef-4f45-b062-59e7d34cb4cf",
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/a10b83ac-7ad4-47b2-9ae0-42f9f9441890",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/a10b83ac-7ad4-47b2-9ae0-42f9f9441890",
     "posts": null,
     "id": 12
   },
   {
-    "title": "مباراة توظيف : AVIS DE توظيف (01) CADRE FINANCIER (H/F) -SOCIETE AL OMRANE FES MEKNES-",
-    "originalTitle": "Concours de recrutement : AVIS DE RECRUTEMENT (01) CADRE FINANCIER (H/F) -SOCIETE AL OMRANE FES MEKNES-",
+    "title": "مباراة توظيف : مهندسs Administration des Systèmes d’Information",
+    "originalTitle": "Concours de recrutement : Ingénieurs Administration des Systèmes d’Information",
     "category": "مباريات",
     "location": "المغرب",
     "description": "فرصة توظيف عمومية",
     "deadline": "غير محدد",
     "publishDate": "",
     "source": "emploi-public.ma",
-    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/3a3aac04-ac4b-4ce2-965e-c94fa206d934",
-    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/3a3aac04-ac4b-4ce2-965e-c94fa206d934",
+    "applyUrl": "https://www.emploi-public.ma/fr/concours/details/18b25a9b-2c50-4882-b13b-6acb4bbe2746",
+    "sourceUrl": "https://www.emploi-public.ma/fr/concours/details/18b25a9b-2c50-4882-b13b-6acb4bbe2746",
     "posts": null,
     "id": 13
   }
