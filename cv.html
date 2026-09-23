@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صانع السيرة الذاتية ورسالة التحفيز الذكي | فرصتك</title>
+  <meta name="description" content="أنشئ سيرة ذاتية ورسالة تحفيز احترافية بالذكاء الاصطناعي مجاناً.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cv.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">فرصـ<span>تك</span></a>
+      <nav class="nav">
+        <a href="index.html">الفرص</a>
+        <a href="cv.html" class="active">السيرة الذاتية</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container cv-page">
+    <h1 class="cv-title">صانع السيرة الذاتية ورسالة التحفيز 🤖</h1>
+    <p class="cv-sub">املأ معلوماتك، ودع الذكاء الاصطناعي يصيغ لك ملخصاً ورسالة تحفيز احترافية — <strong>مجاناً 100%</strong></p>
+
+    <!-- ===== التبويبات ===== -->
+    <div class="tabs no-print">
+      <button class="tab-btn active" data-tab="tab-cv">📄 السيرة الذاتية</button>
+      <button class="tab-btn" data-tab="tab-lettre">✉️ رسالة التحفيز</button>
+    </div>
+
+    <!-- ================= تبويب السيرة ================= -->
+    <div id="tab-cv" class="tab-panel active">
+      <div class="cv-layout">
+
+        <section class="cv-form">
+          <div class="form-section">
+            <h3>📋 المعلومات الشخصية</h3>
+            <div class="photo-row">
+              <label class="photo-upload">
+                <input type="file" id="f-photo" accept="image/*" hidden>
+                <img id="photo-preview" alt="">
+                <span>📷 إضافة صورة</span>
+              </label>
+              <p class="photo-hint">صورة رسمية تزيد احترافية سيرتك (اختياري)</p>
+            </div>
+            <div class="grid2">
+              <input id="f-name" placeholder="الاسم الكامل *">
+              <input id="f-title" placeholder="المسمى الوظيفي (مثال: محاسب) *">
+              <input id="f-email" placeholder="البريد الإلكتروني" dir="ltr">
+              <input id="f-phone" placeholder="الهاتف" dir="ltr">
+              <input id="f-city" placeholder="المدينة">
+              <input id="f-link" placeholder="رابط LinkedIn" dir="ltr">
+            </div>
+            <div class="ai-box">
+              <label>الملخص المهني</label>
+              <textarea id="f-summary" rows="4" placeholder="اكتب نبذة عنك... أو اضغط زر الذكاء الاصطناعي"></textarea>
+              <div class="ai-actions">
+                <button class="btn-ai" id="btn-ai-summary">✨ توليد بالذكاء الاصطناعي</button>
+                <button class="btn-ai ghost" id="btn-ai-skills">✨ اقتراح مهارات لوظيفتي</button>
+              </div>
+              <p class="ai-hint" id="ai-status"></p>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>💼 الخبرات المهنية <button class="btn-add" data-add="exp">+ إضافة</button></h3>
+            <div id="exp-list" class="dyn-list">
+              <div class="dyn-item">
+                <input class="exp-role" placeholder="المنصب (مثال: محاسب)">
+                <input class="exp-org" placeholder="الشركة">
+                <div class="grid2">
+                  <input class="exp-from" placeholder="من (2023)">
+                  <input class="exp-to" placeholder="إلى (2026 أو حتى الآن)">
+                </div>
+                <textarea class="exp-desc" rows="2" placeholder="أهم المهام والإنجازات"></textarea>
+                <button class="btn-del">حذف</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>🎓 التكوين والشهادات <button class="btn-add" data-add="edu">+ إضافة</button></h3>
+            <div id="edu-list" class="dyn-list">
+              <div class="dyn-item">
+                <input class="edu-degree" placeholder="الشهادة (مثال: إجازة في الإدارة)">
+                <input class="edu-school" placeholder="المؤسسة">
+                <div class="grid2">
+                  <input class="edu-from" placeholder="من">
+                  <input class="edu-to" placeholder="إلى">
+                </div>
+                <button class="btn-del">حذف</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>🛠️ المهارات <button class="btn-add" data-add="skill">+ إضافة</button></h3>
+            <div id="skill-list" class="skill-inputs">
+              <input class="skill" placeholder="مثال: Excel">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>🌍 اللغات <button class="btn-add" data-add="lang">+ إضافة</button></h3>
+            <div id="lang-list" class="skill-inputs">
+              <input class="lang" placeholder="مثال: العربية - لغة أم">
+            </div>
+          </div>
+
+          <div class="cv-actions no-print">
+            <button class="btn-apply big" id="btn-print">🖨️ طباعة / حفظ PDF</button>
+            <button class="btn-back big" id="btn-clear">مسح الكل</button>
+          </div>
+        </section>
+
+        <section class="cv-preview-wrap">
+          <div id="cv-preview" class="cv-preview">
+            <div class="cv-head">
+              <img id="p-photo" class="p-photo" alt="" hidden>
+              <div class="cv-head-text">
+                <h2 id="p-name">اسمك الكامل</h2>
+                <p id="p-title">المسمى الوظيفي</p>
+                <p id="p-contact" class="cv-contact"></p>
+              </div>
+            </div>
+            <div class="cv-body">
+              <div class="cv-col-main">
+                <div class="cv-sec" id="sec-summary" style="display:none">
+                  <h4>ملخص</h4>
+                  <p id="p-summary"></p>
+                </div>
+                <div class="cv-sec" id="sec-exp" style="display:none">
+                  <h4>الخبرات المهنية</h4>
+                  <div id="p-exp"></div>
+                </div>
+                <div class="cv-sec" id="sec-edu" style="display:none">
+                  <h4>التكوين</h4>
+                  <div id="p-edu"></div>
+                </div>
+              </div>
+              <div class="cv-col-side">
+                <div class="cv-sec" id="sec-skills" style="display:none">
+                  <h4>مهارات</h4>
+                  <ul id="p-skills"></ul>
+                </div>
+                <div class="cv-sec" id="sec-langs" style="display:none">
+                  <h4>لغات</h4>
+                  <ul id="p-langs"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= تبويب رسالة التحفيز ================= -->
+    <div id="tab-lettre" class="tab-panel">
+      <div class="cv-layout">
+        <section class="cv-form">
+          <div class="form-section">
+            <h3>✉️ معلومات الرسالة</h3>
+            <div class="grid2">
+              <input id="l-company" placeholder="اسم الشركة / المؤسسة *">
+              <input id="l-position" placeholder="المنصب المطلوب *">
+            </div>
+            <textarea id="l-points" rows="3" placeholder="نقاط قوتك أو سبب اهتمامك بالمنصب (مثال: خبرة 3 سنوات في المحاسبة، إتقان Excel...)"></textarea>
+            <div class="ai-actions">
+              <button class="btn-ai" id="btn-ai-lettre">✨ توليد الرسالة بالذكاء الاصطناعي</button>
+            </div>
+            <p class="ai-hint" id="lettre-status"></p>
+          </div>
+
+          <div class="form-section">
+            <h3>📄 نص الرسالة</h3>
+            <textarea id="l-output" rows="16" placeholder="ستظهر الرسالة هنا بعد التوليد — يمكنك تعديلها بحرية"></textarea>
+            <div class="cv-actions">
+              <button class="btn-apply big" id="btn-copy-lettre">📋 نسخ النص</button>
+              <button class="btn-back big" id="btn-print-lettre">🖨️ طباعة / PDF</button>
+            </div>
+            <p class="lettre-note">💡 الرسالة تُولَّد بالفرنسية لأنها المعتمدة في الترشيحات بالمغرب — عدّلها كما تشاء قبل الإرسال.</p>
+          </div>
+        </section>
+
+        <section class="cv-preview-wrap">
+          <div class="lettre-preview">
+            <div class="lettre-head">
+              <strong id="lp-name">—</strong><br>
+              <span id="lp-contact"></span>
+            </div>
+            <div class="lettre-body" id="lp-body">
+              <p class="lettre-placeholder">الرسالة ستظهر هنا معاينةً حية أثناء الكتابة أو بعد التوليد...</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/cv.js"></script>
+</body>
+</html>
