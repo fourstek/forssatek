@@ -3137,6 +3137,19 @@
       "source_url": "https://www.marocannonces.com/categorie/309/Emploi/annonce/10457515/Cabinet-recrute-infirmière-et-secrétaire.html",
       "posted_date": "2026-09-25",
       "manual": false
-    }
+    } ,
+     {
+      "id": "man-001",
+      "title": "العنوان هنا",
+      "organization": "الجهة هنا",
+      "type": "منحة",
+      "sector": "عمومي",
+      "location": "المغرب",
+      "level": "",
+      "deadline": null,
+      "description": "الوصف هنا",
+      "source_url": "https://example.com",
+      "posted_date": "2026-09-29",
+      "manual": true
   ]
 }
