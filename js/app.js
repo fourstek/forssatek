@@ -99,3 +99,8 @@ function updateStats(data) {
   document.getElementById('stat-new').textContent = week;
   document.getElementById('stat-update').textContent = data.last_update || '—';
 }
+const typeCounts = {};
+allOpps.forEach(o => { typeCounts[o.type] = (typeCounts[o.type] || 0) + 1; });
+document.querySelectorAll('#type-filter option').forEach(opt => {
+  if (opt.value && !typeCounts[opt.value]) opt.remove();
+});
