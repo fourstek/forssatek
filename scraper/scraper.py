@@ -8,8 +8,12 @@
 """
 import json, re, hashlib, datetime, html, os
 from urllib.request import urlopen, Request
+from urllib.parse import urljoin
 
 OUT_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "opportunities.json")
+
+# حذف إعلانات القطاع الخاص الأقدم من هذا العدد من الأيام
+PRIVATE_MAX_AGE_DAYS = 30
 
 CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes",
           "Oujda", "Kenitra", "Tetouan", "Mohammedia", "Sale", "Beni Mellal",
@@ -19,6 +23,10 @@ CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes
 def clean_html(text):
     text = re.sub(r"<[^>]+>", " ", text)
     return html.unescape(re.sub(r"\s+", " ", text)).strip()
+
+def norm_title(t):
+    """عنوان مُطبَّع لمقارنة الفرص المكررة"""
+    return re.sub(r"\s+", " ", (t or "")).strip().lower()
 
 def fetch(url):
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 (ForsatekBot/1.0)"})
@@ -108,7 +116,8 @@ def fetch_private(today, seen):
             if len(title) < 8:
                 continue
             seen.add(oid)
-            full_url = href if href.startswith("http") else "https://www.marocannonces.com" + href
+            # إصلاح: urljoin يضيف الرابط النسبي بشكل صحيح حتى لو كان بلا "/" في البداية
+            full_url = urljoin(page_url, href)
             out.append({
                 "id": oid,
                 "title": title,
@@ -124,6 +133,25 @@ def fetch_private(today, seen):
                 "manual": False,
             })
     return out
+
+def clean_and_dedupe(opportunities):
+    """1) حذف البطاقات التجريبية  2) حذف إعلانات الخاص القديمة  3) حذف المكرر حسب العنوان"""
+    # حذف البطاقات الوهمية (sample)
+    opportunities = [o for o in opportunities if not str(o.get("id", "")).startswith("sample")]
+    # حذف إعلانات القطاع الخاص الأقدم من 30 يوماً
+    cutoff = (datetime.date.today() - datetime.timedelta(days=PRIVATE_MAX_AGE_DAYS)).isoformat()
+    opportunities = [o for o in opportunities
+                     if not (str(o.get("id", "")).startswith("pri-")
+                             and (o.get("posted_date", "") or "") < cutoff)]
+    # حذف المكرر حسب العنوان (نُبقي الأحدث لأن القائمة مرتبة تنازلياً)
+    seen_titles, deduped = set(), []
+    for o in opportunities:
+        key = norm_title(o.get("title"))
+        if key and key in seen_titles:
+            continue
+        seen_titles.add(key)
+        deduped.append(o)
+    return deduped
 
 def main():
     today = datetime.date.today().isoformat()
@@ -142,6 +170,7 @@ def main():
         except Exception as e:
             print(f"خطأ في {source.__name__}: {e} (تم الاستمرار)")
     opportunities.sort(key=lambda o: o.get("posted_date", ""), reverse=True)
+    opportunities = clean_and_dedupe(opportunities)
     data = {"last_update": today, "count": len(opportunities), "opportunities": opportunities}
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8") as f:
