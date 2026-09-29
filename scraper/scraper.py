@@ -8,7 +8,6 @@
 """
 import json, re, hashlib, datetime, html, os
 from urllib.request import urlopen, Request
-from urllib.parse import urljoin
 
 OUT_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "opportunities.json")
 
@@ -20,6 +19,8 @@ CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes
           "Nador", "Safi", "El Jadida", "Settat", "Berrechid", "Tifelt",
           "Khouribga", "Ouarzazate", "Essaouira", "Laayoune", "Dakhla"]
 
+MA_BASE = "https://www.marocannonces.com"
+
 def clean_html(text):
     text = re.sub(r"<[^>]+>", " ", text)
     return html.unescape(re.sub(r"\s+", " ", text)).strip()
@@ -27,6 +28,28 @@ def clean_html(text):
 def norm_title(t):
     """عنوان مُطبَّع لمقارنة الفرص المكررة"""
     return re.sub(r"\s+", " ", (t or "")).strip().lower()
+
+def fix_ma_url(url):
+    """تصليح روابط MarocAnnonces الخايبة القديمة والجديدة"""
+    if not url or "marocannonces" not in url:
+        return url
+    # استخراج كل شيء ابتداءً من /annonce/ وإعادة بناء رابط صحيح
+    m = re.search(r"/annonce/\d+", url)
+    if m:
+        return MA_BASE + "/categorie/309/Emploi/Offres-emploi" + url[m.start():]
+    return url
+
+def build_ma_url(href):
+    """بناء رابط صحيح من أي صيغة يرجعها الموقع"""
+    href = (href or "").strip()
+    if href.startswith("http"):
+        return fix_ma_url(href)
+    if href.startswith("//"):
+        return fix_ma_url("https:" + href)
+    if href.startswith("/"):
+        return fix_ma_url(MA_BASE + href)
+    # رابط نسبي بلا "/" في البداية -> نظيف "/" يدوياً
+    return fix_ma_url(MA_BASE + "/" + href)
 
 def fetch(url):
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 (ForsatekBot/1.0)"})
@@ -87,8 +110,8 @@ def fetch_public(today, seen):
     return out
 
 MA_PAGES = [
-    "https://www.marocannonces.com/categorie/309/Emploi/Offres-emploi.html",
-    "https://www.marocannonces.com/categorie/309/Emploi/Offres-emploi/2.html",
+    MA_BASE + "/categorie/309/Emploi/Offres-emploi.html",
+    MA_BASE + "/categorie/309/Emploi/Offres-emploi/2.html",
 ]
 
 def fetch_private(today, seen):
@@ -116,8 +139,6 @@ def fetch_private(today, seen):
             if len(title) < 8:
                 continue
             seen.add(oid)
-            # إصلاح: urljoin يضيف الرابط النسبي بشكل صحيح حتى لو كان بلا "/" في البداية
-            full_url = urljoin(page_url, href)
             out.append({
                 "id": oid,
                 "title": title,
@@ -128,14 +149,15 @@ def fetch_private(today, seen):
                 "level": "",
                 "deadline": None,
                 "description": title + "\n\nفرصة من القطاع الخاص منشورة على MarocAnnonces. اضغط على زر التقديم لمشاهدة التفاصيل الكاملة والتقديم مباشرة لدى المعلن.",
-                "source_url": full_url,
+                "source_url": build_ma_url(href),
                 "posted_date": today,
                 "manual": False,
             })
     return out
 
 def clean_and_dedupe(opportunities):
-    """1) حذف البطاقات التجريبية  2) حذف إعلانات الخاص القديمة  3) حذف المكرر حسب العنوان"""
+    """1) حذف البطاقات التجريبية  2) حذف إعلانات الخاص القديمة
+       3) تصليح الروابط الخايبة  4) حذف المكرر حسب العنوان"""
     # حذف البطاقات الوهمية (sample)
     opportunities = [o for o in opportunities if not str(o.get("id", "")).startswith("sample")]
     # حذف إعلانات القطاع الخاص الأقدم من 30 يوماً
@@ -143,6 +165,9 @@ def clean_and_dedupe(opportunities):
     opportunities = [o for o in opportunities
                      if not (str(o.get("id", "")).startswith("pri-")
                              and (o.get("posted_date", "") or "") < cutoff)]
+    # تصليح الروابط الخايبة في القديم والجديد
+    for o in opportunities:
+        o["source_url"] = fix_ma_url(o.get("source_url", ""))
     # حذف المكرر حسب العنوان (نُبقي الأحدث لأن القائمة مرتبة تنازلياً)
     seen_titles, deduped = set(), []
     for o in opportunities:
