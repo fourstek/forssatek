@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 فرصتك - جالب الفرص التلقائي (مصدران)
-1) emploi-public.ma  -> API ووردبريس  -> قطاع: عمومي
-2) marocannonces.com -> صفحة Offres emploi (309) -> قطاع: خاص
+1) emploi-public.ma  -> HTML مباشر (الموقع الجديد) -> قطاع: عمومي
+2) marocannonces.com -> صفحة Offres emploi (309)   -> قطاع: خاص
 يكتب النتيجة في data/opportunities.json
 """
 import json, re, hashlib, datetime, html, os
@@ -21,6 +21,24 @@ CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes
 
 MA_BASE = "https://www.marocannonces.com"
 
+# --- emploi-public.ma (الموقع الجديد) ---
+EP_LIST = "https://www.emploi-public.ma/fr/concours-liste"
+
+FR_MONTHS = {
+    "janvier": "01", "février": "02", "mars": "03", "avril": "04",
+    "mai": "05", "juin": "06", "juillet": "07", "août": "08",
+    "septembre": "09", "octobre": "10", "novembre": "11", "décembre": "12",
+}
+
+def parse_fr_date(text):
+    """تحويل تاريخ فرنسي مثل '25 Septembre 2026' إلى صيغة ISO"""
+    m = re.match(r"\s*(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})", text)
+    if not m:
+        return None
+    d, mon, y = m.groups()
+    mon_num = FR_MONTHS.get(mon.lower())
+    return f"{y}-{mon_num}-{d.zfill(2)}" if mon_num else None
+
 def clean_html(text):
     text = re.sub(r"<[^>]+>", " ", text)
     return html.unescape(re.sub(r"\s+", " ", text)).strip()
@@ -30,10 +48,9 @@ def norm_title(t):
     return re.sub(r"\s+", " ", (t or "")).strip().lower()
 
 def fix_ma_url(url):
-    """تصليح روابط MarocAnnonces الخايبة القديمة والجديدة"""
+    """تصليح روابط MarocAnnonces الخايبة"""
     if not url or "marocannonces" not in url:
         return url
-    # استخراج كل شيء ابتداءً من /annonce/ وإعادة بناء رابط صحيح
     m = re.search(r"/annonce/\d+", url)
     if m:
         return MA_BASE + "/categorie/309/Emploi" + url[m.start():]
@@ -48,7 +65,6 @@ def build_ma_url(href):
         return fix_ma_url("https:" + href)
     if href.startswith("/"):
         return fix_ma_url(MA_BASE + href)
-    # رابط نسبي بلا "/" في البداية -> نظيف "/" يدوياً
     return fix_ma_url(MA_BASE + "/" + href)
 
 def fetch(url):
@@ -85,28 +101,60 @@ def detect_public_type(title):
     return "وظيفة"
 
 def fetch_public(today, seen):
-    posts = json.loads(fetch("https://www.emploi-public.ma/wp-json/wp/v2/posts?per_page=30"))
+    """جلب المباريات من emploi-public.ma — الموقع الجديد (HTML مباشر مع pagination)"""
     out = []
-    for p in posts:
-        title = clean_html(p["title"]["rendered"])
-        content = clean_html(p["content"]["rendered"])
-        oid = "pub-" + hashlib.md5(p["slug"].encode()).hexdigest()[:12]
-        if oid in seen:
+    for page in (1, 2, 3):
+        try:
+            page_html = fetch(f"{EP_LIST}?page={page}")
+        except Exception as e:
+            print(f"تعذر جلب صفحة المباريات {page}: {e}")
             continue
-        out.append({
-            "id": oid,
-            "title": title,
-            "organization": "التوظيف العمومي بالمغرب",
-            "type": detect_public_type(title),
-            "sector": "عمومي",
-            "location": "المغرب",
-            "level": "",
-            "deadline": extract_deadline(content),
-            "description": content[:800],
-            "source_url": p.get("link", ""),
-            "posted_date": p.get("date", "")[:10] or today,
-            "manual": False,
-        })
+        for m in re.finditer(
+            r'<a href="(/fr/concours/details/[a-f0-9-]{36})" class="card card-scale">',
+            page_html,
+        ):
+            link = m.group(1)
+            oid = "pub-" + link.rsplit("/", 1)[-1][:12]
+            if oid in seen:
+                continue
+            # محتوى البطاقة كامل (من بعد <a> حتى </a>)
+            start = m.end()
+            end = page_html.find("</a>", start)
+            card = page_html[start:end if end != -1 else start + 5000]
+            t = re.search(r'<h2 class="card-title">([^<]+)</h2>', card)
+            if not t:
+                continue
+            title = html.unescape(t.group(1)).strip()
+            o = re.search(r'<div class="card-text"><i[^>]*></i>([^<]+)</div>', card)
+            org = html.unescape(o.group(1)).strip() if o else "الإدارة العمومية"
+            p = re.search(r"(\d+)\s*postes?", card)
+            dl = re.search(r"Limite de d[ée]p[ôo]t\s*:\s*([0-9]{1,2}\s+[A-Za-zÀ-ÿ]+\s+[0-9]{4})", card)
+            dc = re.search(r"Date du concours\s*:\s*([0-9]{1,2}\s+[A-Za-zÀ-ÿ]+\s+[0-9]{4})", card)
+            deadline = parse_fr_date(dl.group(1)) if dl else None
+            concours_date = parse_fr_date(dc.group(1)) if dc else None
+            seen.add(oid)
+            desc = f"الجهة: {org}\n"
+            if p:
+                desc += f"عدد المناصب: {p.group(1)}\n"
+            if deadline:
+                desc += f"آخر أجل لإيداع الترشيحات: {deadline}\n"
+            if concours_date:
+                desc += f"تاريخ إجراء المباراة: {concours_date}\n"
+            desc += "\nفرصة من التوظيف العمومي منشورة على بوابة emploi-public.ma. اضغط على زر التقديم للاطلاع على التفاصيل الكاملة وشروط المشاركة."
+            out.append({
+                "id": oid,
+                "title": title,
+                "organization": org,
+                "type": detect_public_type(title),
+                "sector": "عمومي",
+                "location": "المغرب",
+                "level": "",
+                "deadline": deadline,
+                "description": desc,
+                "source_url": "https://www.emploi-public.ma" + link,
+                "posted_date": today,
+                "manual": False,
+            })
     return out
 
 MA_PAGES = [
@@ -158,17 +206,13 @@ def fetch_private(today, seen):
 def clean_and_dedupe(opportunities):
     """1) حذف البطاقات التجريبية  2) حذف إعلانات الخاص القديمة
        3) تصليح الروابط الخايبة  4) حذف المكرر حسب العنوان"""
-    # حذف البطاقات الوهمية (sample)
     opportunities = [o for o in opportunities if not str(o.get("id", "")).startswith("sample")]
-    # حذف إعلانات القطاع الخاص الأقدم من 30 يوماً
     cutoff = (datetime.date.today() - datetime.timedelta(days=PRIVATE_MAX_AGE_DAYS)).isoformat()
     opportunities = [o for o in opportunities
                      if not (str(o.get("id", "")).startswith("pri-")
                              and (o.get("posted_date", "") or "") < cutoff)]
-    # تصليح الروابط الخايبة في القديم والجديد
     for o in opportunities:
         o["source_url"] = fix_ma_url(o.get("source_url", ""))
-    # حذف المكرر حسب العنوان (نُبقي الأحدث لأن القائمة مرتبة تنازلياً)
     seen_titles, deduped = set(), []
     for o in opportunities:
         key = norm_title(o.get("title"))
