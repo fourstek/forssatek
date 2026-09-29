@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fourstek.github.io/forssatek/sitemap.xml
