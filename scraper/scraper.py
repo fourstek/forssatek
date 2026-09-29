@@ -36,7 +36,7 @@ def fix_ma_url(url):
     # استخراج كل شيء ابتداءً من /annonce/ وإعادة بناء رابط صحيح
     m = re.search(r"/annonce/\d+", url)
     if m:
-        return MA_BASE + "/categorie/309/Emploi/Offres-emploi" + url[m.start():]
+        return MA_BASE + "/categorie/309/Emploi" + url[m.start():]
     return url
 
 def build_ma_url(href):
