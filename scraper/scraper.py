@@ -4,7 +4,7 @@
 فرصتك - جالب الفرص التلقائي (3 مجموعات مصادر)
 1) emploi-public.ma  -> المباريات والوظائف العمومية        -> قطاع: عمومي
 2) marocannonces.com -> وظائف القطاع الخاص                 -> قطاع: خاص
-3) مصادر أوروبا      -> MIEPEEC (بروكسي) + ANAPEC + Job Bank + يدوي
+3) مصادر أوروبا      -> MIEPEEC + ANAPEC + Job Bank + يدوي -> type: خارج المغرب
 يكتب النتيجة في data/opportunities.json
 """
 import json, re, hashlib, datetime, html, os
