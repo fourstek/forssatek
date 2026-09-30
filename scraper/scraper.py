@@ -4,7 +4,7 @@
 فرصتك - جالب الفرص التلقائي (3 مجموعات مصادر)
 1) emploi-public.ma  -> المباريات والوظائف العمومية        -> قطاع: عمومي
 2) marocannonces.com -> وظائف القطاع الخاص                 -> قطاع: خاص
-3) مصادر أوروبا      -> MIEPS + ANAPEC + Job Bank + يدوي   -> type: خارج المغرب
+3) مصادر أوروبا      -> MIEPEEC + ANAPEC + Job Bank + يدوي -> type: خارج المغرب
 يكتب النتيجة في data/opportunities.json
 """
 import json, re, hashlib, datetime, html, os
@@ -254,25 +254,31 @@ def make_europe_item(oid, title, url, today, country_text="", org=""):
     }
 
 def fetch_mieps(today, seen):
-    """MIEPS (وزارة الإدماج الاقتصادي) - إعلانات العقود الموسمية الدولية (GECCO وغيرها)"""
+    """MIEPEEC (وزارة الإدماج الاقتصادي) - إعلانات العقود الموسمية الدولية (GECCO وغيرها)"""
     KEYWORDS = ["gecco", "saisonnier", "espagne", "portugal", "international",
-                "العقود الموسمية", "إسبانيا", "البرتغال", "التشغيل بالخارج"]
+                "العقود الموسمية", "إسبانيا", "البرتغال", "التشغيل بالخارج", "wafira"]
     candidates = [
-        "https://www.mieps.gov.ma/",
-        "https://mieps.gov.ma/",
-        "https://www.mieps.gov.ma/actualites",
-        "https://www.mieps.gov.ma/fr/actualites",
+        "https://www.miepeec.gov.ma/fr/",
+        "https://miepeec.gov.ma/fr/",
+        "https://www.miepeec.gov.ma/fr/actualites",
+        "https://www.miepeec.gov.ma/",
     ]
+    try:
+        from bs4 import BeautifulSoup
+    except ImportError:
+        print("MIEPS: beautifulsoup4 غير مثبتة")
+        return []
     out = []
     for url in candidates:
         try:
-            page = fetch(url)
+            soup = BeautifulSoup(fetch(url), "html.parser")
         except Exception as e:
             print(f"MIEPS: تعذر جلب {url}: {e}")
             continue
         found_here = 0
-        for m in re.finditer(r'href="([^"]+)"[^>]*>([^<]{10,200})<', page, re.I):
-            href, title = m.group(1), clean_html(m.group(2))
+        for a in soup.find_all("a", href=True):
+            title = a.get_text(" ", strip=True)
+            href = a["href"]
             tl = title.lower()
             if not any(k in tl for k in KEYWORDS):
                 continue
@@ -284,16 +290,15 @@ def fetch_mieps(today, seen):
             if href.startswith("http"):
                 link = href
             elif href.startswith("/"):
-                link = "https://www.mieps.gov.ma" + href
+                link = "https://www.miepeec.gov.ma" + href
             else:
-                link = "https://www.mieps.gov.ma/" + href
-            o = make_europe_item(h, title, link, today,
-                                 country_text=title,
-                                 org="وزارة الإدماج الاقتصادي - MIEPS")
-            out.append(o)
+                link = "https://www.miepeec.gov.ma/" + href
+            out.append(make_europe_item(h, title, link, today,
+                                        country_text=title,
+                                        org="وزارة الإدماج الاقتصادي - MIEPEEC"))
             found_here += 1
         if found_here:
-            print(f"MIEPS: جلب من {url}")
+            print(f"MIEPS: جلب {found_here} من {url}")
             break
     return out
 
