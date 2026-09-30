@@ -4,7 +4,7 @@
 فرصتك - جالب الفرص التلقائي (3 مجموعات مصادر)
 1) emploi-public.ma  -> المباريات والوظائف العمومية        -> قطاع: عمومي
 2) marocannonces.com -> وظائف القطاع الخاص                 -> قطاع: خاص
-3) مصادر أوروبا      -> ANAPEC + Job Bank Canada + يدوي   -> type: خارج المغرب
+3) مصادر أوروبا      -> MIEPS + ANAPEC + Job Bank + يدوي   -> type: خارج المغرب
 يكتب النتيجة في data/opportunities.json
 """
 import json, re, hashlib, datetime, html, os
@@ -13,7 +13,6 @@ from urllib.request import urlopen, Request
 OUT_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "opportunities.json")
 MANUAL_EUROPE_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "europe_manual.json")
 
-# حذف إعلانات القطاع الخاص والأوروبية الأقدم من هذا العدد من الأيام
 PRIVATE_MAX_AGE_DAYS = 30
 
 CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes",
@@ -21,7 +20,6 @@ CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes
           "Nador", "Safi", "El Jadida", "Settat", "Berrechid", "Tifelt",
           "Khouribga", "Ouarzazate", "Essaouira", "Laayoune", "Dakhla"]
 
-# --- أوروبا: الدول والرايات ---
 COUNTRY_FLAGS = {
     "espana": "🇪🇸", "spain": "🇪🇸", "espagne": "🇪🇸", "إسبانيا": "🇪🇸",
     "portugal": "🇵🇹", "البرتغال": "🇵🇹",
@@ -61,11 +59,9 @@ def detect_country(text):
 
 MA_BASE = "https://www.marocannonces.com"
 
-# --- emploi-public.ma — النسخة العربية ---
 EP_LIST = ("https://www.emploi-public.ma/ar/"
            "%D9%82%D8%A7%D8%A6%D9%85%D8%A9-%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA")
 
-# الأشهر بالعربية المغربية
 AR_MONTHS = {
     "جانفي": "01", "فيفري": "02", "مارس": "03",
     "أفريل": "04", "افريل": "04",
@@ -76,7 +72,6 @@ AR_MONTHS = {
 }
 
 def parse_ar_date(text):
-    """تحويل تاريخ عربي مثل '7 أكتوبر 2026' إلى صيغة ISO"""
     m = re.match(r"\s*(\d{1,2})\s+([^<\s]{2,20})\s+(\d{4})", text)
     if not m:
         return None
@@ -85,7 +80,6 @@ def parse_ar_date(text):
     return f"{y}-{mon_num}-{d.zfill(2)}" if mon_num else None
 
 def is_french_title(t):
-    """هل العنوان بالفرنسية؟ (لاستبدال النسخ الفرنسية القديمة بالعربية)"""
     return bool(re.search(r"[A-Za-z]{4,}", t or ""))
 
 def clean_html(text):
@@ -131,10 +125,7 @@ def detect_public_type(title):
     if any(k in t for k in ["تكوين", "formation"]): return "تكوين"
     return "وظيفة"
 
-# ==================== المغرب: التوظيف العمومي ====================
-
 def fetch_public(today, seen):
-    """جلب المباريات من emploi-public.ma — النسخة العربية (HTML مباشر مع pagination)"""
     out = []
     for page in (1, 2, 3):
         try:
@@ -192,8 +183,6 @@ def fetch_public(today, seen):
             })
     return out
 
-# ==================== المغرب: القطاع الخاص ====================
-
 MA_PAGES = [
     MA_BASE + "/categorie/309/Emploi/Offres-emploi.html",
     MA_BASE + "/categorie/309/Emploi/Offres-emploi/2.html",
@@ -240,16 +229,12 @@ def fetch_private(today, seen):
             })
     return out
 
-# ==================== أوروبا: عروض جديدة ====================
-# ملاحظة: العناوين تُنشر ب لغتها الأصلية (بلا ترجمة) + اسم الدولة + الراية
-
 EUROPE_SOURCES = {
     "anapec": "https://www.anapec.org/",
     "jobbank_rss": "https://www.jobbank.gc.ca/jobsearch/rss?searchstring=&locationstring=Canada",
 }
 
 def make_europe_item(oid, title, url, today, country_text="", org=""):
-    """بناء عنصر عرض أوروبي — العنوان أصلي، والراية فـ location"""
     country_name, flag = detect_country(country_text + " " + title)
     if not country_name:
         country_name, flag = "أوروبا", "🌍"
@@ -268,8 +253,51 @@ def make_europe_item(oid, title, url, today, country_text="", org=""):
         "manual": False,
     }
 
+def fetch_mieps(today, seen):
+    """MIEPS (وزارة الإدماج الاقتصادي) - إعلانات العقود الموسمية الدولية (GECCO وغيرها)"""
+    KEYWORDS = ["gecco", "saisonnier", "espagne", "portugal", "international",
+                "العقود الموسمية", "إسبانيا", "البرتغال", "التشغيل بالخارج"]
+    candidates = [
+        "https://www.mieps.gov.ma/",
+        "https://mieps.gov.ma/",
+        "https://www.mieps.gov.ma/actualites",
+        "https://www.mieps.gov.ma/fr/actualites",
+    ]
+    out = []
+    for url in candidates:
+        try:
+            page = fetch(url)
+        except Exception as e:
+            print(f"MIEPS: تعذر جلب {url}: {e}")
+            continue
+        found_here = 0
+        for m in re.finditer(r'href="([^"]+)"[^>]*>([^<]{10,200})<', page, re.I):
+            href, title = m.group(1), clean_html(m.group(2))
+            tl = title.lower()
+            if not any(k in tl for k in KEYWORDS):
+                continue
+            if not title or len(title) < 10:
+                continue
+            h = hashlib.md5((href + title).encode()).hexdigest()
+            if "eur-" + h[:16] in seen:
+                continue
+            if href.startswith("http"):
+                link = href
+            elif href.startswith("/"):
+                link = "https://www.mieps.gov.ma" + href
+            else:
+                link = "https://www.mieps.gov.ma/" + href
+            o = make_europe_item(h, title, link, today,
+                                 country_text=title,
+                                 org="وزارة الإدماج الاقتصادي - MIEPS")
+            out.append(o)
+            found_here += 1
+        if found_here:
+            print(f"MIEPS: جلب من {url}")
+            break
+    return out
+
 def fetch_europe_anapec(today, seen):
-    """ANAPEC — صفحة العروض (قد تحتاج تعديل الروابط حسب بنية الموقع)"""
     out = []
     candidates = [
         "https://www.anapec.org/",
@@ -281,7 +309,6 @@ def fetch_europe_anapec(today, seen):
         except Exception as e:
             print(f"ANAPEC: تعذر جلب {url}: {e}")
             continue
-        # روابط العروض (نبحث عن روابط فيها offre/recrutement/international)
         for m in re.finditer(r'href="([^"]*(?:offre|recrutement|emploi|international)[^"]*)"[^>]*>([^<]{8,120})<', page, re.I):
             href, title = m.group(1), clean_html(m.group(2))
             if not title or len(title) < 8:
@@ -296,7 +323,6 @@ def fetch_europe_anapec(today, seen):
     return out
 
 def fetch_europe_jobbank(today, seen):
-    """Canada Job Bank — تغذية RSS رسمية (عناوين أصلية بالإنجليزية/الفرنسية)"""
     out = []
     try:
         rss = fetch(EUROPE_SOURCES["jobbank_rss"])
@@ -320,9 +346,6 @@ def fetch_europe_jobbank(today, seen):
     return out
 
 def fetch_europe_manual(today, seen):
-    """عروض يدوية من ملف data/europe_manual.json — الصيغة:
-    [{"title": "...", "url": "...", "country": "espana", "org": "..."}]
-    """
     if not os.path.exists(MANUAL_EUROPE_FILE):
         return []
     try:
@@ -347,12 +370,9 @@ def fetch_europe_manual(today, seen):
         out.append(o)
     return out
 
-# ==================== التنظيف والدمج ====================
-
 def clean_and_dedupe(opportunities):
     opportunities = [o for o in opportunities if not str(o.get("id", "")).startswith("sample")]
     cutoff = (datetime.date.today() - datetime.timedelta(days=PRIVATE_MAX_AGE_DAYS)).isoformat()
-    # حذف القديم: القطاع الخاص + الأوروبي (ما عدا اليدوي)
     opportunities = [o for o in opportunities
                      if not (str(o.get("id", "")).startswith(("pri-", "eur-"))
                              and not o.get("manual")
@@ -378,7 +398,7 @@ def main():
                 if not (str(o.get("id", "")).startswith("pub-") and is_french_title(o.get("title", "")))]
     seen = {str(o["id"]) for o in existing}
     opportunities = list(existing)
-    for source in (fetch_public, fetch_private,
+    for source in (fetch_public, fetch_private, fetch_mieps,
                    fetch_europe_anapec, fetch_europe_jobbank, fetch_europe_manual):
         try:
             new_items = source(today, seen)
