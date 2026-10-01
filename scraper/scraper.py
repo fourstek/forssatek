@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-فرصتك - جالب الفرص التلقائي (3 مجموعات مصادر)
-1) emploi-public.ma  -> المباريات والوظائف العمومية        -> قطاع: عمومي
-2) marocannonces.com -> وظائف القطاع الخاص                 -> قطاع: خاص
-3) مصادر أوروبا      -> MIEPEEC + ANAPEC + Job Bank + يدوي -> type: خارج المغرب
-يكتب النتيجة في data/opportunities.json
+فرصتك - جالب الفرص التلقائي (8 مصادر)
+1) emploi-public.ma   -> المباريات والوظائف العمومية
+2) marocannonces.com  -> وظائف القطاع الخاص
+3) Arbeitnow API      -> عروض أوروبا أوتوماتيك (مجاني بلا مفتاح)
+4) MIEPEEC (بروكسي)   -> إعلانات الوزارة
+5) ANAPEC / Job Bank  -> مصادر أوروبية إضافية
+6) europe_manual.json -> عروض أوروبا اليدوية
+7) manual.json        -> منح وتكوينات يدوية
 """
 import json, re, hashlib, datetime, html, os
 from urllib.request import urlopen, Request
@@ -253,8 +256,48 @@ def make_europe_item(oid, title, url, today, country_text="", org=""):
         "manual": False,
     }
 
+def fetch_europe_api(today, seen):
+    """عروض أوروبا أوتوماتيك عبر Arbeitnow API (مجاني، بلا مفتاح)"""
+    out = []
+    try:
+        raw = fetch("https://www.arbeitnow.com/api/job-board-api")
+        data = json.loads(raw)
+    except Exception as e:
+        print(f"EuropeAPI: تعذر الجلب: {e}")
+        return out
+    for it in data.get("data", []):
+        title = (it.get("title") or "").strip()
+        url = (it.get("url") or "").strip()
+        loc = (it.get("location") or "").strip()
+        company = (it.get("company_name") or "").strip()
+        if not title or not url:
+            continue
+        h = hashlib.md5(url.encode()).hexdigest()
+        if "eur-" + h[:16] in seen:
+            continue
+        country_name, flag = detect_country(loc + " " + title)
+        if not country_name:
+            country_name, flag = "أوروبا", "🌍"
+        out.append({
+            "id": "eur-" + h[:16],
+            "title": title,
+            "organization": company or "Arbeitnow (أوروبا)",
+            "type": "خارج المغرب",
+            "sector": "",
+            "location": f"{flag} {country_name}",
+            "level": "",
+            "deadline": None,
+            "description": title + f"\n\n📍 {flag} {country_name} — {loc}\n\nفرصة عمل منشورة على Arbeitnow — اضغط على زر التقديم للاطلاع على التفاصيل والتقديم.",
+            "source_url": url,
+            "posted_date": today,
+            "manual": False,
+        })
+        if len(out) >= 20:
+            break
+    return out
+
 def fetch_mieps(today, seen):
-    """MIEPEEC عبر r.jina.ai — بروكسي مجاني كيتجاوز الحجب الجغرافي"""
+    """MIEPEEC عبر r.jina.ai — بروكسي مجاني"""
     KEYWORDS = ["gecco", "saisonnier", "espagne", "portugal", "international",
                 "العقود الموسمية", "إسبانيا", "البرتغال", "التشغيل بالخارج", "wafira"]
     candidates = [
@@ -292,10 +335,7 @@ def fetch_mieps(today, seen):
 
 def fetch_europe_anapec(today, seen):
     out = []
-    candidates = [
-        "https://www.anapec.org/",
-        "https://www.anapec.org/cms/",
-    ]
+    candidates = ["https://www.anapec.org/", "https://www.anapec.org/cms/"]
     for url in candidates:
         try:
             page = fetch(url)
@@ -428,7 +468,7 @@ def main():
                 if not (str(o.get("id", "")).startswith("pub-") and is_french_title(o.get("title", "")))]
     seen = {str(o["id"]) for o in existing}
     opportunities = list(existing)
-    for source in (fetch_public, fetch_private, fetch_mieps,
+    for source in (fetch_public, fetch_private, fetch_europe_api, fetch_mieps,
                    fetch_europe_anapec, fetch_europe_jobbank, fetch_europe_manual, fetch_manual):
         try:
             new_items = source(today, seen)
