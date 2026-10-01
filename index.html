@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>فرصتك | وظائف، مباريات، منح وتكوينات في المغرب وأوروبا</title>
-  <meta name="description" content="منصة فرصتك المجانية: تجد كل الوظائف والمباريات والمنح والتكوينات المتاحة في المغرب وأوروبا في مكان واحد، مع تحديث يومي.">
-  <link rel="stylesheet" href="css/style.css">
+  <title>فرصتك | لقي فرصتك وخلي الفرص تلقاك</title>
+  <meta name="description" content="منصة فرصتك المجانية: وظائف، مباريات، منح وتكوينات في المغرب وأوروبا — تحديث يومي أوتوماتيكي.">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 
@@ -25,10 +25,11 @@
   </header>
 
   <section class="hero">
-    <div class="container">
-      <h1>فرصتك القادمة تبدأ من هنا</h1>
-      <p>وظائف، مباريات، منح وتكوينات في المغرب وأوروبا — مجاناً، وتحديث يومي</p>
-
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <span class="hero-flag">🇲🇦</span>
+      <h1>لقِ <span class="grad">فرصتك</span> وخلّي الفرص تلقاك</h1>
+      <p>منصة مغربية مجانية للوظائف والمباريات والمنح والتكوينات — وأخبار العمل في أوروبا</p>
       <div class="search-box">
         <input type="search" id="search-input" placeholder="ابحث عن فرصة: مباراة، منحة، وظيفة...">
         <select id="type-filter">
@@ -44,32 +45,100 @@
           <option value="عمومي">قطاع عمومي</option>
           <option value="خاص">قطاع خاص</option>
         </select>
+        <button class="search-btn" onclick="applyFilters()">🔍</button>
       </div>
-
-      <div class="stats">
-        <div class="stat"><strong id="stat-total">0</strong><span>فرصة متاحة</span></div>
-        <div class="stat"><strong id="stat-new">0</strong><span>فرصة جديدة هذا الأسبوع</span></div>
-        <div class="stat"><strong id="stat-update">—</strong><span>آخر تحديث</span></div>
+      <div class="quick-pills">
+        <span>أكثر بحثاً:</span>
+        <button class="pill" data-type="وظيفة">وظائف</button>
+        <button class="pill" data-type="مباراة">مباريات</button>
+        <button class="pill" data-type="منحة">منح</button>
+        <button class="pill" data-type="تكوين">تكوينات</button>
       </div>
     </div>
   </section>
 
-  <main class="container">
+  <section class="categories">
+    <div class="container">
+      <div class="cat-grid">
+        <div class="cat-card" data-type="وظيفة" style="background-image:url('images/cat-jobs.jpg')">
+          <div class="cat-overlay"></div>
+          <div class="cat-body"><h3>الوظائف</h3><p>فرص عمل في القطاعين العام والخاص</p></div>
+        </div>
+        <div class="cat-card" data-type="مباراة" style="background-image:url('images/cat-concours.jpg')">
+          <div class="cat-overlay"></div>
+          <div class="cat-body"><h3>المباريات</h3><p>مباريات التوظيف في جميع القطاعات</p></div>
+        </div>
+        <div class="cat-card" data-type="منحة" style="background-image:url('images/cat-bourses.jpg')">
+          <div class="cat-overlay"></div>
+          <div class="cat-body"><h3>المنح</h3><p>منح دراسية محلية ودولية</p></div>
+        </div>
+        <div class="cat-card" data-type="تكوين" style="background-image:url('images/cat-formations.jpg')">
+          <div class="cat-overlay"></div>
+          <div class="cat-body"><h3>التكوينات</h3><p>دورات وتكوينات مجانية ومدعومة</p></div>
+        </div>
+        <div class="cat-card" data-type="جديد" style="background-image:url('images/cat-new.jpg')">
+          <div class="cat-overlay"></div>
+          <div class="cat-body"><h3>الفرص الجديدة</h3><p>أحدث الفرص والمستجدات</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-bar">
+    <div class="container stats-grid">
+      <div class="stat-item"><strong id="stat-total">0</strong><span>فرصة نشطة</span></div>
+      <div class="stat-item"><strong id="stat-new">0</strong><span>فرصة جديدة هذا الأسبوع</span></div>
+      <div class="stat-item"><strong>+12</strong><span>مدينة وجهة</span></div>
+      <div class="stat-item"><strong>100%</strong><span>مجاني للجميع</span></div>
+    </div>
+  </section>
+
+  <main class="container" id="opportunities">
+    <div class="section-head">
+      <h2>أحدث <span class="grad">الفرص</span> 🔥</h2>
+      <button class="pill" onclick="resetFilters()">عرض الكل ←</button>
+    </div>
     <div id="status" class="status">جارٍ تحميل الفرص...</div>
     <div id="opps-grid" class="opps-grid"></div>
   </main>
 
-  <section id="about" class="about">
-    <div class="container">
-      <h2>ما هي منصة فرصتك؟</h2>
-      <p>فرصتك منصة مغربية مجانية 100%، تجمع لك كل الفرص المتاحة (وظائف عمومية، مباريات، منح دراسية، تكوينات، وعروض العمل في أوروبا) في مكان واحد، وتتحدث تلقائياً كل يوم حتى لا تفوتك أي فرصة.</p>
+  <section class="community" style="background-image:url('images/community.jpg')">
+    <div class="community-overlay"></div>
+    <div class="container community-content">
+      <h2>مجتمع <span class="grad-pink">فرصتك</span></h2>
+      <p>تواصل مع باقي الباحثين عن الفرص وشارك تجربتك</p>
+      <div class="community-pills">
+        <span class="cpill">👥 متابعة</span>
+        <span class="cpill">💬 تعليقات</span>
+        <span class="cpill">❤️ إعجابات</span>
+        <span class="cpill">📤 مشاركات</span>
+      </div>
+      <a href="about.html" class="btn-pink">ما نحو مستقبل أفضل ←</a>
     </div>
   </section>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>فرصتك © 2026 — جميع الحقوق محفوظة | المنصة مجانية بالكامل</p>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo light">فرصـ<span>تك</span></a>
+        <p>لقي فرصتك وخلي الفرص تلقاك</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="about.html">من نحن</a>
+        <a href="contact.html">اتصل بنا</a>
+        <a href="privacy.html">خصوصية</a>
+        <a href="sitemap.xml">خريطة الموقع</a>
+      </div>
+      <div class="footer-social">
+        <a href="#" title="فيسبوك">f</a>
+        <a href="#" title="انستغرام">◎</a>
+        <a href="#" title="يوتيوب">▶</a>
+        <a href="#" title="إكس">𝕏</a>
+        <a href="#" title="لينكدإن">in</a>
+      </div>
     </div>
+    <div class="footer-bottom">فرصتك © 2026 — جميع الحقوق محفوظة | المنصة مجانية بالكامل</div>
   </footer>
 
   <script src="js/app.js"></script>
