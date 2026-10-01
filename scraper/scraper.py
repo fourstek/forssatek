@@ -363,6 +363,43 @@ def fetch_europe_manual(today, seen):
         out.append(o)
     return out
 
+def fetch_manual(today, seen):
+    """عروض يدوية عامة من data/manual.json — أي نوع (منح، تكوينات...)"""
+    MANUAL_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "manual.json")
+    if not os.path.exists(MANUAL_FILE):
+        return []
+    try:
+        with open(MANUAL_FILE, encoding="utf-8") as f:
+            items = json.load(f)
+    except Exception as e:
+        print(f"ملف manual.json غير صالح: {e}")
+        return []
+    out = []
+    for it in items:
+        title = (it.get("title") or "").strip()
+        url = (it.get("url") or "").strip()
+        if not title or not url:
+            continue
+        h = hashlib.md5(url.encode()).hexdigest()
+        oid = "man-" + h[:16]
+        if oid in seen:
+            continue
+        out.append({
+            "id": oid,
+            "title": title,
+            "organization": it.get("org", "فرصة منشورة يدوياً"),
+            "type": it.get("type", "وظيفة"),
+            "sector": it.get("sector", ""),
+            "location": it.get("location", "المغرب"),
+            "level": it.get("level", ""),
+            "deadline": it.get("deadline", None),
+            "description": it.get("description", title),
+            "source_url": url,
+            "posted_date": today,
+            "manual": True,
+        })
+    return out
+
 def clean_and_dedupe(opportunities):
     opportunities = [o for o in opportunities if not str(o.get("id", "")).startswith("sample")]
     cutoff = (datetime.date.today() - datetime.timedelta(days=PRIVATE_MAX_AGE_DAYS)).isoformat()
@@ -392,7 +429,7 @@ def main():
     seen = {str(o["id"]) for o in existing}
     opportunities = list(existing)
     for source in (fetch_public, fetch_private, fetch_mieps,
-                   fetch_europe_anapec, fetch_europe_jobbank, fetch_europe_manual):
+                   fetch_europe_anapec, fetch_europe_jobbank, fetch_europe_manual, fetch_manual):
         try:
             new_items = source(today, seen)
             opportunities.extend(new_items)
