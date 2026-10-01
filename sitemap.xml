@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://fourstek.github.io/forssatek/index.html</loc>
-<lastmod>2026-09-30</lastmod>
+<lastmod>2026-10-01</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
 </url>
@@ -27,6 +27,12 @@
 <url>
 <loc>https://fourstek.github.io/forssatek/blog/travail-europe-maroc.html</loc>
 <lastmod>2026-09-30</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://fourstek.github.io/forssatek/blog/bourses-etudes-maroc.html</loc>
+<lastmod>2026-10-01</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
