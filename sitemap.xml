@@ -36,4 +36,10 @@
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
+  <url>
+<loc>https://fourstek.github.io/forssatek/blog/concours-enseignants-2026.html</loc>
+<lastmod>2026-10-01</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
 </urlset>
