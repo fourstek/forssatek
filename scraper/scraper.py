@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-فرصتك - جالب الفرص التلقائي (8 مصادر)
-1) emploi-public.ma   -> المباريات والوظائف العمومية
-2) marocannonces.com  -> وظائف القطاع الخاص
-3) Arbeitnow API      -> عروض أوروبا أوتوماتيك (مجاني بلا مفتاح)
-4) MIEPEEC (بروكسي)   -> إعلانات الوزارة
-5) ANAPEC / Job Bank  -> مصادر أوروبية إضافية
-6) europe_manual.json -> عروض أوروبا اليدوية
-7) manual.json        -> منح وتكوينات يدوية
+فرصتك - جالب الفرص التلقائي (8 مصادر + فلتر السبان)
 """
 import json, re, hashlib, datetime, html, os
 from urllib.request import urlopen, Request
@@ -17,6 +10,9 @@ OUT_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "opportunities.
 MANUAL_EUROPE_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "europe_manual.json")
 
 PRIVATE_MAX_AGE_DAYS = 30
+
+# فلتر السبان/المتاجر (عروض مزيفة من المصادر المجانية)
+SPAM_DOMAINS = ["preiswecker", "gutschein", "amazon.", "etsy.com", "ebay.", "asos.", "zalando.", "idealo."]
 
 CITIES = ["Casablanca", "Rabat", "Marrakech", "Tanger", "Agadir", "Fes", "Meknes",
           "Oujda", "Kenitra", "Tetouan", "Mohammedia", "Sale", "Beni Mellal",
@@ -59,6 +55,10 @@ def detect_country(text):
         if k in t:
             return COUNTRY_NAMES.get(k, k), COUNTRY_FLAGS[k]
     return None, None
+
+def is_spam(url, title):
+    low = ((url or "") + " " + (title or "")).lower()
+    return any(s in low for s in SPAM_DOMAINS) or "€" in (title or "")
 
 MA_BASE = "https://www.marocannonces.com"
 
@@ -257,7 +257,7 @@ def make_europe_item(oid, title, url, today, country_text="", org=""):
     }
 
 def fetch_europe_api(today, seen):
-    """عروض أوروبا أوتوماتيك عبر Arbeitnow API (مجاني، بلا مفتاح)"""
+    """عروض أوروبا أوتوماتيك عبر Arbeitnow API (مجاني، بلا مفتاح، مع فلتر السبان)"""
     out = []
     try:
         raw = fetch("https://www.arbeitnow.com/api/job-board-api")
@@ -271,6 +271,8 @@ def fetch_europe_api(today, seen):
         loc = (it.get("location") or "").strip()
         company = (it.get("company_name") or "").strip()
         if not title or not url:
+            continue
+        if is_spam(url, title):
             continue
         h = hashlib.md5(url.encode()).hexdigest()
         if "eur-" + h[:16] in seen:
@@ -297,7 +299,6 @@ def fetch_europe_api(today, seen):
     return out
 
 def fetch_mieps(today, seen):
-    """MIEPEEC عبر r.jina.ai — بروكسي مجاني"""
     KEYWORDS = ["gecco", "saisonnier", "espagne", "portugal", "international",
                 "العقود الموسمية", "إسبانيا", "البرتغال", "التشغيل بالخارج", "wafira"]
     candidates = [
@@ -404,7 +405,6 @@ def fetch_europe_manual(today, seen):
     return out
 
 def fetch_manual(today, seen):
-    """عروض يدوية عامة من data/manual.json — أي نوع (منح، تكوينات...)"""
     MANUAL_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "manual.json")
     if not os.path.exists(MANUAL_FILE):
         return []
@@ -466,6 +466,12 @@ def main():
             existing = json.load(f).get("opportunities", [])
     existing = [o for o in existing
                 if not (str(o.get("id", "")).startswith("pub-") and is_french_title(o.get("title", "")))]
+    # مسح السبان القديم من الأوروبا أوتوماتيك
+    before = len(existing)
+    existing = [o for o in existing if not is_spam(o.get("source_url", ""), o.get("title", ""))]
+    removed = before - len(existing)
+    if removed:
+        print(f"تم مسح {removed} عرض سبام قديم")
     seen = {str(o["id"]) for o in existing}
     opportunities = list(existing)
     for source in (fetch_public, fetch_private, fetch_europe_api, fetch_mieps,
