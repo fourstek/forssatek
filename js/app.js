@@ -1,4 +1,4 @@
-* فرصتك - منطق الصفحة الرئيسية (التصميم الجديد) */
+/* فرصتك - منطق الصفحة الرئيسية */
 const grid = document.getElementById('opps-grid');
 const statusEl = document.getElementById('status');
 const searchInput = document.getElementById('search-input');
