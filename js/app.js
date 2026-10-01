@@ -1,4 +1,4 @@
-/* فرصتك - منطق الصفحة الرئيسية (التصميم الجديد) */
+* فرصتك - منطق الصفحة الرئيسية (التصميم الجديد) */
 const grid = document.getElementById('opps-grid');
 const statusEl = document.getElementById('status');
 const searchInput = document.getElementById('search-input');
@@ -10,7 +10,7 @@ const TYPE_IMAGES = {
   'مباراة': 'images/cat-concours.jpg',
   'منحة': 'images/cat-bourses.jpg',
   'تكوين': 'images/cat-formations.jpg',
-  'خارج المغرب': 'images/cat-new.jpg'
+  'خارج المغرب': 'images/europe.jpg'
 };
 
 let allOpps = [];
@@ -37,7 +37,6 @@ searchInput.addEventListener('input', applyFilters);
 typeFilter.addEventListener('change', () => { newOnly = false; applyFilters(); });
 sectorFilter.addEventListener('change', () => { newOnly = false; applyFilters(); });
 
-/* الحبوب السريعة + بطاقات التصنيفات */
 document.querySelectorAll('.pill[data-type], .cat-card[data-type]').forEach(el => {
   el.addEventListener('click', () => {
     const t = el.dataset.type;
