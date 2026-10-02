@@ -262,3 +262,27 @@ body {
   .search-box { flex-direction: column; }
   .search-box input, .search-box select, .search-btn { width: 100%; }
 }
+
+* ===== قائمة منسدلة: المقالات ===== */
+.nav-item { position: relative; }
+.nav-item > a { cursor: pointer; }
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(30,27,75,.15);
+  min-width: 220px;
+  padding: 8px;
+  z-index: 200;
+}
+.nav-item:hover .dropdown-menu { display: block; }
+.dropdown-menu a {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.dropdown-menu a:hover { background: #f3f0ff; color: var(--primary); }
