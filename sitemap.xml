@@ -120,5 +120,12 @@
 <changefreq>weekly</changefreq>
 <priority>0.8</priority>
 </url>
+  <url>
+<loc>https://fourstek.github.io/forssatek/blog/travail-distance-maroc.html</loc>
+<lastmod>2026-10-09</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
+
 
 </urlset>
