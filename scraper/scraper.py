@@ -517,7 +517,7 @@ def fetch_gulf_via_jina(today, seen):
                 continue
             flag = detect_gulf(title + " " + current_country)
             if flag == "🌍":
-                flag = detect_gulf(term)
+                continue
             h = hashlib.md5(href.encode()).hexdigest()
             if "eur-" + h[:16] in seen:
                 continue
