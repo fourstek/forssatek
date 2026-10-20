@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-فرصتك - جالب الفرص التلقائي (8 مصادر + فلتر السبان)
+فرصتك - جالب الفرص التلقائي (10 مصادر + فلتر السبان)
 """
 import json, re, hashlib, datetime, html, os
 from urllib.request import urlopen, Request
@@ -440,6 +440,113 @@ def fetch_manual(today, seen):
         })
     return out
 
+# ===== الخليج أوتوماتيك (آمن: أي خطأ هنا لا يوقف الباقي) =====
+
+GULF_FLAGS = {"قطر": "🇶🇦", "qatar": "🇶🇦", "doha": "🇶🇦", "الدوحة": "🇶🇦",
+              "الإمارات": "🇦🇪", "emirates": "🇦🇪", "dubai": "🇦🇪", "دبي": "🇦🇪",
+              "abu dhabi": "🇦🇪", "أبوظبي": "🇦🇪",
+              "السعودية": "🇸🇦", "saudi": "🇸🇦", "riyadh": "🇸🇦", "الرياض": "🇸🇦",
+              "jeddah": "🇸🇦", "جدة": "🇸🇦",
+              "الكويت": "🇰🇼", "kuwait": "🇰🇼",
+              "البحرين": "🇧🇭", "bahrain": "🇧🇭",
+              "عمان": "🇴🇲", "oman": "🇴🇲", "muscat": "🇴🇲", "مسقط": "🇴🇲"}
+
+def detect_gulf(text):
+    t = (text or "").lower()
+    for k in GULF_FLAGS:
+        if k in t:
+            return GULF_FLAGS[k]
+    return "🌍"
+
+def fetch_json_post(url, payload):
+    req = Request(url, data=json.dumps(payload).encode("utf-8"),
+                  headers={"User-Agent": "Mozilla/5.0 (ForsatekBot/1.0)",
+                           "Content-Type": "application/json"})
+    with urlopen(req, timeout=40) as r:
+        return json.loads(r.read().decode("utf-8", errors="ignore"))
+
+def fetch_reliefweb_gulf(today, seen):
+    """وظائف الأمم المتحدة والمنظمات في الخليج — API رسمي مجاني وموثوق"""
+    out = []
+    try:
+        data = fetch_json_post("https://api.reliefweb.int/v1/jobs",
+                               {"limit": 25, "sort": ["date:desc"]})
+    except Exception as e:
+        print(f"ReliefWeb: تعذر الجلب: {e}")
+        return out
+    for it in data.get("data", []):
+        f = it.get("fields", {})
+        title = (f.get("title") or "").strip()
+        url = (f.get("url_alias") or "").strip()
+        if not title or not url:
+            continue
+        if not url.startswith("http"):
+            url = "https://reliefweb.int" + url
+        org = ", ".join(s.get("name", "") for s in f.get("source", [])) or "ReliefWeb"
+        country = ", ".join(c.get("name", "") for c in f.get("country", []))
+        flag = detect_gulf(title + " " + country)
+        if flag == "🌍":
+            continue  # خليج فقط
+        if is_spam(url, title):
+            continue
+        h = hashlib.md5(url.encode()).hexdigest()
+        if "eur-" + h[:16] in seen:
+            continue
+        out.append({
+            "id": "eur-" + h[:16],
+            "title": title,
+            "organization": org,
+            "type": "خارج المغرب",
+            "sector": "",
+            "location": f"{flag} {country or 'الخليج'}",
+            "level": "",
+            "deadline": None,
+            "description": title + f"\n\n📍 {flag} {country or 'الخليج'}\n\nفرصة منشورة عبر ReliefWeb (شبكة الأمم المتحدة). اضغط على زر التقديم للاطلاع على التفاصيل.",
+            "source_url": url,
+            "posted_date": today,
+            "manual": False,
+        })
+        if len(out) >= 15:
+            break
+    return out
+
+def fetch_qatar_living(today, seen):
+    """عروض قطر من QatarLiving — مع نفس فلتر السبان الموجود"""
+    out = []
+    try:
+        page = fetch("https://www.qatarliving.com/jobs")
+    except Exception as e:
+        print(f"QatarLiving: تعذر الجلب: {e}")
+        return out
+    for m in re.finditer(r'<a href="(https://www\.qatarliving\.com/jobs/[^"?#]+)"[^>]*>(.*?)</a>',
+                         page, re.S):
+        href = m.group(1)
+        title = clean_html(m.group(2))
+        if len(title) < 10 or len(title) > 150:
+            continue
+        if is_spam(href, title):
+            continue
+        h = hashlib.md5(href.encode()).hexdigest()
+        if "eur-" + h[:16] in seen:
+            continue
+        out.append({
+            "id": "eur-" + h[:16],
+            "title": title,
+            "organization": "QatarLiving - قطر",
+            "type": "خارج المغرب",
+            "sector": "",
+            "location": "🇶🇦 قطر",
+            "level": "",
+            "deadline": None,
+            "description": title + "\n\n📍 🇶🇦 قطر\n\nفرصة منشورة على QatarLiving. اضغط على زر التقديم للاطلاع على التفاصيل.",
+            "source_url": href,
+            "posted_date": today,
+            "manual": False,
+        })
+        if len(out) >= 20:
+            break
+    return out
+
 def clean_and_dedupe(opportunities):
     opportunities = [o for o in opportunities if not str(o.get("id", "")).startswith("sample")]
     cutoff = (datetime.date.today() - datetime.timedelta(days=PRIVATE_MAX_AGE_DAYS)).isoformat()
@@ -475,7 +582,8 @@ def main():
     seen = {str(o["id"]) for o in existing}
     opportunities = list(existing)
     for source in (fetch_public, fetch_private, fetch_europe_api, fetch_mieps,
-                   fetch_europe_anapec, fetch_europe_jobbank, fetch_europe_manual, fetch_manual):
+                   fetch_europe_anapec, fetch_europe_jobbank, fetch_reliefweb_gulf,
+                   fetch_qatar_living, fetch_europe_manual, fetch_manual):
         try:
             new_items = source(today, seen)
             opportunities.extend(new_items)
