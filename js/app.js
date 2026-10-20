@@ -104,8 +104,16 @@ function render(list) {
   grid.innerHTML = list.map(o => {
     const cd = countdownText(o.deadline);
     const urgent = o.deadline && new Date(o.deadline) - new Date() <= 7 * 86400000;
-    const img = TYPE_IMAGES[o.type] || 'images/cat-new.jpg';
-    const europe = o.type === 'خارج المغرب';
+    const loc = o.location || '';
+    const gulf = /قطر|السعودية|الإمارات|الكويت|البحرين|عمان|الخليج|qatar|saudi|dubai/i.test(loc);
+    const canada = /كندا|canada/i.test(loc);
+    let badge = '';
+    if (o.type === 'خارج المغرب') {
+      if (gulf) badge = '<span class="badge europe" style="background:#0e5c3a">🌴 الخليج</span>';
+      else if (canada) badge = '<span class="badge europe" style="background:#d80621">🍁 كندا</span>';
+      else badge = '<span class="badge europe">🌍 أوروبا</span>';
+    }
+    const img = (o.type === 'خارج المغرب' && gulf) ? 'images/gulf.svg' : (TYPE_IMAGES[o.type] || 'images/cat-new.jpg');
     return `
     <article class="opp-card">
       <div class="opp-img" style="background-image:url('${img}')">
@@ -115,7 +123,7 @@ function render(list) {
         <div class="badges">
           ${isNew(o.posted_date) ? '<span class="badge new">جديد</span>' : ''}
           ${urgent ? '<span class="badge urgent">يُغلق قريباً</span>' : ''}
-          ${europe ? '<span class="badge europe">🌍 أوروبا</span>' : ''}
+          ${badge}
         </div>
         <h3>${o.title}</h3>
         <p class="org">${o.organization}</p>
@@ -135,3 +143,4 @@ function updateStats(data) {
   const week = allOpps.filter(o => isNew(o.posted_date)).length;
   document.getElementById('stat-new').textContent = week;
 }
+
