@@ -46,7 +46,7 @@ COUNTRY_NAMES = {
     "ireland": "Ireland", "irlande": "Irlande", "أيرلندا": "أيرلندا",
     "greece": "Ελλάδα", "grece": "Grèce", "اليونان": "اليونان",
     "poland": "Polska", "pologne": "Pologne", "بولندا": "بولندا",
-    "uk": "UK", "united kingdom": "UK", "royaume-uni": "Royoame-Uni", "بريطانيا": "بريطانيا",
+    "uk": "UK", "united kingdom": "UK", "royaume-uni": "Royaume-Uni", "بريطانيا": "بريطانيا",
 }
 
 def detect_country(text):
@@ -458,47 +458,31 @@ def detect_gulf(text):
             return GULF_FLAGS[k]
     return "🌍"
 
-GULF_SOURCES_JINA = [
-    ("https://r.jina.ai/https://www.qatarliving.com/jobs", "qatarliving.com/jobs/", "QatarLiving - قطر", "🇶🇦 قطر"),
-    ("https://r.jina.ai/https://reliefweb.int/jobs", "reliefweb.int/jobs/", "ReliefWeb (الخليج)", None),
-]
-
 def fetch_gulf_via_jina(today, seen):
-    """عروض الخليج عبر بروكسي jina.ai — بيتخطى حماية المواقع"""
+    """عروض الخليج: QatarLiving + ReliefWeb (بحث مباشر: قطر/السعودية/دبي)"""
     out = []
-    for jina_url, link_pat, org, fixed_loc in GULF_SOURCES_JINA:
-        try:
-            page = fetch(jina_url)
-        except Exception as e:
-            print(f"Gulf({org}): تعذر الجلب: {e}")
-            continue
+
+    # 1) QatarLiving
+    try:
+        page = fetch("https://r.jina.ai/https://www.qatarliving.com/jobs")
         found = 0
-        for m in re.finditer(r'\[([^\]]{10,200})\]\((https?://[^)]*' + re.escape(link_pat) + r'[^)]*)\)', page):
+        for m in re.finditer(r'\[([^\]]{10,150})\]\((https://www\.qatarliving\.com/jobs/[^)]+)\)', page):
             title, href = clean_html(m.group(1)), m.group(2)
-            if len(title) < 10 or len(title) > 150:
-                continue
             if is_spam(href, title):
                 continue
-            if fixed_loc is None:
-                flag = detect_gulf(title)
-                if flag == "🌍":
-                    continue
-                loc = f"{flag} الخليج"
-            else:
-                loc = fixed_loc
             h = hashlib.md5(href.encode()).hexdigest()
             if "eur-" + h[:16] in seen:
                 continue
             out.append({
                 "id": "eur-" + h[:16],
                 "title": title,
-                "organization": org,
+                "organization": "QatarLiving - قطر",
                 "type": "خارج المغرب",
                 "sector": "",
-                "location": loc,
+                "location": "🇶🇦 قطر",
                 "level": "",
                 "deadline": None,
-                "description": title + f"\n\n📍 {loc}\n\nفرصة منشورة عبر {org}. اضغط على زر التقديم للاطلاع على التفاصيل.",
+                "description": title + "\n\n📍 🇶🇦 قطر\n\nفرصة منشورة على QatarLiving. اضغط على زر التقديم للاطلاع على التفاصيل.",
                 "source_url": href,
                 "posted_date": today,
                 "manual": False,
@@ -507,7 +491,58 @@ def fetch_gulf_via_jina(today, seen):
             found += 1
             if found >= 20:
                 break
-        print(f"Gulf({org}): +{found} فرصة")
+        print(f"Gulf(QatarLiving): +{found} فرصة")
+    except Exception as e:
+        print(f"Gulf(QatarLiving): تعذر الجلب: {e}")
+
+    # 2) ReliefWeb — بحث مباشر في الخليج
+    found = 0
+    for term in ("qatar", "saudi", "dubai"):
+        try:
+            page = fetch(f"https://r.jina.ai/https://reliefweb.int/jobs?search={term}")
+        except Exception as e:
+            print(f"Gulf(ReliefWeb {term}): تعذر الجلب: {e}")
+            continue
+        current_country = ""
+        for line in page.splitlines():
+            mc = re.search(r'\[([^\]]+)\]\(https://reliefweb\.int/jobs\?list=', line)
+            if mc:
+                current_country = mc.group(1)
+                continue
+            mj = re.search(r'\[([^\]]{10,200})\]\((https://reliefweb\.int/job/\d+[^)]+)\)', line)
+            if not mj:
+                continue
+            title, href = clean_html(mj.group(1)), mj.group(2)
+            if is_spam(href, title):
+                continue
+            flag = detect_gulf(title + " " + current_country)
+            if flag == "🌍":
+                flag = detect_gulf(term)
+            h = hashlib.md5(href.encode()).hexdigest()
+            if "eur-" + h[:16] in seen:
+                continue
+            loc = f"{flag} {current_country or 'الخليج'}"
+            out.append({
+                "id": "eur-" + h[:16],
+                "title": title,
+                "organization": "ReliefWeb (الخليج)",
+                "type": "خارج المغرب",
+                "sector": "",
+                "location": loc,
+                "level": "",
+                "deadline": None,
+                "description": title + f"\n\n📍 {loc}\n\nفرصة منشورة عبر ReliefWeb (شبكة الأمم المتحدة). اضغط على زر التقديم للاطلاع على التفاصيل.",
+                "source_url": href,
+                "posted_date": today,
+                "manual": False,
+            })
+            seen.add("eur-" + h[:16])
+            found += 1
+            if found >= 20:
+                break
+        if found >= 20:
+            break
+    print(f"Gulf(ReliefWeb): +{found} فرصة")
     return out
 
 def clean_and_dedupe(opportunities):
