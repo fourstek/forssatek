@@ -469,7 +469,7 @@ def fetch_reliefweb_gulf(today, seen):
     """وظائف الأمم المتحدة والمنظمات في الخليج — API رسمي مجاني وموثوق"""
     out = []
     try:
-        data = fetch_json_post("https://api.reliefweb.int/v2/jobs/list",
+        data = fetch_json_post("https://api.reliefweb.int/v2/jobs?appname=forsatek-jobbot",
                                {"limit": 25, "sort": ["date:desc"]})
     except Exception as e:
         print(f"ReliefWeb: تعذر الجلب: {e}")
