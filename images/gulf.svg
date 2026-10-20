@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e5c3a"/>
+      <stop offset="1" stop-color="#c9a227"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g)"/>
+  <circle cx="655" cy="85" r="58" fill="#f5d76e" opacity="0.9"/>
+  <path d="M0 360 Q200 320 400 360 T800 360 V450 H0 Z" fill="#0b4a2e" opacity="0.55"/>
+  <path d="M0 395 Q200 355 400 395 T800 395 V450 H0 Z" fill="#083b24" opacity="0.6"/>
+  <text x="400" y="215" font-family="Tahoma, Arial, sans-serif" font-size="95" font-weight="bold" fill="#ffffff" text-anchor="middle">الخليج</text>
+  <text x="400" y="275" font-family="Arial, sans-serif" font-size="32" fill="#ffe9b0" text-anchor="middle">GULF JOBS · عروض عمل</text>
+  <text x="400" y="330" font-family="Arial, sans-serif" font-size="22" fill="#ffffff" opacity="0.85" text-anchor="middle">🇸🇦 🇦🇪 🇶🇦 🇰🇼 🇧🇭 🇴🇲</text>
+</svg>
