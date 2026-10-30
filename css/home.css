@@ -321,3 +321,6 @@ body {
   .search-box { flex-direction: column; }
   .search-box input, .search-box select, .search-btn { width: 100%; }
 }
+/* منع قفز الصفحة أثناء التحميل */
+#opps-grid { min-height: 60vh; }
+
