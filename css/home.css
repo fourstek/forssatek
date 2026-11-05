@@ -345,3 +345,29 @@ html, body { overflow-x: hidden; }
     grid-column: 1 / -1;
   }
 }
+/* ===== المربعات الخمسة: نص واضح ===== */
+.cat-card { min-width: 0; }
+.cat-body {
+  right: 0; left: 0; bottom: 0;
+  padding: 12px;
+  overflow-wrap: anywhere;
+}
+.cat-body h3 {
+  font-size: 1.1rem;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  white-space: normal;
+}
+.cat-body p {
+  font-size: .75rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .cat-card { height: 150px; }
+  .cat-body h3 { font-size: 1rem; }
+  .cat-body p { display: none; }
+}
