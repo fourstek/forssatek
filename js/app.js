@@ -94,6 +94,14 @@ function isNew(posted) {
   return (new Date() - new Date(posted)) / 86400000 <= 3;
 }
 
+/* يقطع العنوان الفرنسي الطويل ويبقى غير الوظيفة */
+function shortTitle(t) {
+  const raw = (t || '').replace(/\s+/g, ' ').trim();
+  let s = raw.split(/\s(?:Niveau|Salaire|Mission|Nous|Dans|Bac|Vos|Votre)\b/)[0].trim();
+  if (!s) s = raw;
+  return s.length > 90 ? s.slice(0, 87) + '...' : s;
+}
+
 function render(list) {
   if (!list.length) {
     grid.innerHTML = '';
@@ -114,6 +122,7 @@ function render(list) {
       else badge = '<span class="badge europe">🌍 أوروبا</span>';
     }
     const img = (o.type === 'خارج المغرب' && gulf) ? 'images/gulf.svg' : (TYPE_IMAGES[o.type] || 'images/cat-new.jpg');
+    const title = shortTitle(o.title);
     return `
     <article class="opp-card">
       <div class="opp-img" style="background-image:url('${img}')">
@@ -125,12 +134,8 @@ function render(list) {
           ${urgent ? '<span class="badge urgent">يُغلق قريباً</span>' : ''}
           ${badge}
         </div>
-        <h3>${o.title}</h3>
-        <p class="org">${o.organization}</p>
-        <div class="meta">
-          <span>📍 ${o.location || 'المغرب'}</span>
-          ${o.level ? '<span>🎓 ' + o.level + '</span>' : ''}
-        </div>
+        <h3>${title}</h3>
+        <p class="meta"><span>📍 ${loc || 'المغرب'}</span></p>
         <div class="countdown ${cd.cls}">${cd.text}</div>
         <a class="btn" href="detail.html?id=${o.id}">عرض التفاصيل</a>
       </div>
@@ -143,4 +148,3 @@ function updateStats(data) {
   const week = allOpps.filter(o => isNew(o.posted_date)).length;
   document.getElementById('stat-new').textContent = week;
 }
-
