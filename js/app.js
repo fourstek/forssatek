@@ -97,11 +97,11 @@ function isNew(posted) {
 /* يقطع العنوان الفرنسي الطويل ويبقى غير الوظيفة */
 function shortTitle(t) {
   const raw = (t || '').replace(/\s+/g, ' ').trim();
-  let s = raw.split(/\s(?:Niveau|Salaire|Mission|Nous|Dans|Bac|Vos|Votre)\b/)[0].trim();
+  let s = raw.split(/\s(?:Nous|Dans|Niveau|Mission|Salaire|Bac|Vos|Votre|Pour|Sous|Avec)\b/)[0].trim();
+  s = s.split(' - ')[0].trim();
   if (!s) s = raw;
-  return s.length > 90 ? s.slice(0, 87) + '...' : s;
+  return s.length > 60 ? s.slice(0, 57) + '...' : s;
 }
-
 function render(list) {
   if (!list.length) {
     grid.innerHTML = '';
