@@ -228,7 +228,13 @@
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
-
+  
+<url>
+<loc>https://fourstek.github.io/forssatek/blog/bourse-minhaty-universite.html</loc>
+<lastmod>2026-11-06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
 
 
 
