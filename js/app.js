@@ -80,7 +80,7 @@ function isClosed(deadline) {
 }
 
 function countdownText(deadline) {
-  if (!deadline) return { text: 'بدون أجل محدد', cls: '' };
+  if (!deadline) return { text: '', cls: '' };
   const diff = new Date(deadline) - new Date();
   const days = Math.ceil(diff / 86400000);
   if (days <= 0) return { text: 'انتهى الأجل', cls: 'closed' };
@@ -136,7 +136,7 @@ function render(list) {
         </div>
         <h3>${title}</h3>
         <p class="meta"><span>📍 ${loc || 'المغرب'}</span></p>
-        <div class="countdown ${cd.cls}">${cd.text}</div>
+        ${cd.text ? `<div class="countdown ${cd.cls}">${cd.text}</div>` : ''}
         <a class="btn" href="detail.html?id=${o.id}">عرض التفاصيل</a>
       </div>
     </article>`;
