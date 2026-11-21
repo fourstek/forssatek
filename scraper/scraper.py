@@ -563,6 +563,25 @@ def clean_and_dedupe(opportunities):
         deduped.append(o)
     return deduped
 
+def apply_overrides(opps):
+    """تعديلات يدوية (data/overrides.json): تعوض الوصف أو الآجل لفرصة بنفس الـ id"""
+    path = os.path.join(os.path.dirname(__file__), "..", "data", "overrides.json")
+    if not os.path.exists(path):
+        return opps
+    try:
+        with open(path, encoding="utf-8") as f:
+            overrides = {str(x.get("id")): x for x in json.load(f)}
+    except Exception as e:
+        print(f"ملف overrides.json غير صالح: {e}")
+        return opps
+    for o in opps:
+        patch = overrides.get(str(o.get("id")))
+        if patch:
+            for k, v in patch.items():
+                if k != "id":
+                    o[k] = v
+    return opps
+
 def main():
     today = datetime.date.today().isoformat()
     existing = []
@@ -590,7 +609,7 @@ def main():
         except Exception as e:
             print(f"خطأ في {source.__name__}: {e} (تم الاستمرار)")
     opportunities.sort(key=lambda o: o.get("posted_date", ""), reverse=True)
-    opportunities = clean_and_dedupe(opportunities)
+    opportunities = apply_overrides(clean_and_dedupe(opportunities))
     data = {"last_update": today, "count": len(opportunities), "opportunities": opportunities}
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8") as f:
