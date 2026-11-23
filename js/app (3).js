@@ -22,7 +22,7 @@ fetch('data/opportunities.json')
     return r.json();
   })
   .then(data => {
-    allOpps = (data.opportunities || []).filter(o => !isClosed(o.deadline));
+    allOpps = (data.opportunities || []).filter(o => !isClosed(o.deadline) && !/^[\x00-\x7F]+$/.test(o.title || ''));
     const typeCounts = {};
     allOpps.forEach(o => { typeCounts[o.type] = (typeCounts[o.type] || 0) + 1; });
     document.querySelectorAll('#type-filter option').forEach(opt => {
